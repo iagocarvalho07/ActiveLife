@@ -6,11 +6,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.iagocarvalho.activelife.screens.AddWorkoutScreen.WorkoutScreen
 import com.iagocarvalho.activelife.screens.ReaderSplashScreen
+import com.iagocarvalho.activelife.screens.fullExerciseScreen.FullExerciceScreen
 import com.iagocarvalho.activelife.screens.homeScreen.HomeScreen
 import com.iagocarvalho.activelife.screens.loginScreens.EmailLogin.ActiveLifeLoginAndCreateAccScreen
 import com.iagocarvalho.activelife.screens.loginScreens.emailValidation.EmailVerificationScreen
 import com.iagocarvalho.activelife.screens.loginScreens.recoverPassaword.ResetPasswordScreen
 import com.iagocarvalho.activelife.screens.profileScreen.ProfileScreen
+import com.iagocarvalho.activelife.screens.workoutScreen.WorkoutABCScreen
 
 @Composable
 fun ReaderNagivation() {
@@ -19,16 +21,16 @@ fun ReaderNagivation() {
         navController = navController,
         startDestination = NagitaionScreens.readerSplashScreen.name
     ) {
-        composable(route = NagitaionScreens.readerSplashScreen.name) {
+        composable(route = NagitaionScreens.readerSplashScreen.name){
             ReaderSplashScreen(navController = navController)
         }
-        composable(route = NagitaionScreens.ActiveLifeLoginScreenWithEmail.name) {
+        composable(route = NagitaionScreens.ActiveLifeLoginScreenWithEmail.name){
             ActiveLifeLoginAndCreateAccScreen(navController = navController)
         }
-        composable(route = NagitaionScreens.EmailVerification.name) {
+        composable(route = NagitaionScreens.EmailVerification.name){
             EmailVerificationScreen(navController = navController)
         }
-        composable(route = NagitaionScreens.ResetPasswordScreen.name) {
+        composable(route = NagitaionScreens.ResetPasswordScreen.name){
             ResetPasswordScreen(navController = navController)
         }
         composable(NagitaionScreens.HomeScreen.name){
@@ -39,6 +41,12 @@ fun ReaderNagivation() {
         }
         composable(NagitaionScreens.WorkoutScreen.name){
             WorkoutScreen(navController = navController)
+        }
+        composable(NagitaionScreens.FullExerciceScreen.name){
+            FullExerciceScreen(navController = navController)
+        }
+        composable(NagitaionScreens.WorkoutABCScreen.name){
+            WorkoutABCScreen(navController = navController)
         }
     }
 }

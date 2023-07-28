@@ -1,4 +1,4 @@
-package com.iagocarvalho.activelife.screens.AddWorkoutScreen
+package com.iagocarvalho.activelife.screens.fullExerciseScreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -6,9 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,44 +20,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.iagocarvalho.activelife.navigation.NagitaionScreens
 import com.iagocarvalho.activelife.screens.homeScreen.BottomNavigationScreen
 import com.iagocarvalho.activelife.screens.homeScreen.TopAppBarScren
 
-@Preview
 @OptIn(ExperimentalMaterial3Api::class)
+@Preview
 @Composable
-fun WorkoutScreen(navController: NavController = NavController(LocalContext.current)) {
-    Scaffold(
-        topBar = {
-            TopAppBarScren(
-                navController = navController,
-                PageTitle = "Treinos",
-                isHomeScreen = false
-            ) {
-                navController.popBackStack()
-            }
-        }, floatingActionButton = {
-            FloatingActionButton(
-                onClick = { navController.navigate(NagitaionScreens.FullExerciceScreen.name) },
-                shape = CircleShape, containerColor = Color(0xFFE47C0E)
-            ) {
-                Text(
-                    text = "+",
-                    style = TextStyle(
-                        fontSize = 45.sp,
-                        fontFamily = FontFamily.Serif,
-                        fontWeight = FontWeight(700),
-                        color = Color.Black,
-                    )
-                )
-
-            }
-        },
-        bottomBar = { BottomNavigationScreen(navController = navController) }
-    ) { contentPadding ->
-        // Screen content
-        Box(modifier = Modifier.padding(contentPadding)) {
+fun FullExerciceScreen(navController: NavController = NavController(LocalContext.current)) {
+    Scaffold(topBar = {
+        TopAppBarScren(
+            navController = navController,
+            PageTitle = "Full Exercise",
+            isHomeScreen = false
+        ) {
+            navController.popBackStack()
+        }
+    }, bottomBar = { BottomNavigationScreen(navController = navController) }) { contentPadding ->
+        Box(modifier = Modifier.padding(contentPadding)){
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -69,7 +46,7 @@ fun WorkoutScreen(navController: NavController = NavController(LocalContext.curr
 
             ) {
                 Text(
-                    text = "Active Life Treinos Screen",
+                    text = "Active Life, aqui consumir todos os dados da api",
                     style = TextStyle(
                         fontSize = 45.sp,
                         fontFamily = FontFamily.Serif,
@@ -77,9 +54,8 @@ fun WorkoutScreen(navController: NavController = NavController(LocalContext.curr
                         color = Color(0xFFE47C0E),
                     )
                 )
+
             }
         }
-
     }
-
 }
