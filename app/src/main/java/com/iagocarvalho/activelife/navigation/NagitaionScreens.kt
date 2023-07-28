@@ -5,7 +5,9 @@ enum class NagitaionScreens {
     ActiveLifeLoginScreenWithEmail,
     EmailVerification,
     ResetPasswordScreen,
-    HomeScreen;
+    HomeScreen,
+    ProfileScreen,
+    WorkoutScreen;
 
     companion object {
         fun FromRoute(route: String): NagitaionScreens = when (route?.substringBefore("/")) {
@@ -14,7 +16,8 @@ enum class NagitaionScreens {
             EmailVerification.name -> EmailVerification
             ResetPasswordScreen.name -> ResetPasswordScreen
             HomeScreen.name -> HomeScreen
-
+            ProfileScreen.name -> ProfileScreen
+            WorkoutScreen.name -> WorkoutScreen
             null -> readerSplashScreen
             else -> throw IllegalArgumentException("Route $route is not recognized")
         }

@@ -1,5 +1,6 @@
 package com.iagocarvalho.activelife.screens.loginScreens.recoverPassaword
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ColorScheme
@@ -28,14 +30,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.iagocarvalho.activelife.R
+import com.iagocarvalho.activelife.navigation.NagitaionScreens
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview
 @Composable
-fun ResetPasswordScreen(navController: NavController = NavController(LocalContext.current)) {
-    val emailResetPassword = remember { mutableStateOf("") }
+fun ResetPasswordScreen(
+    navController: NavController,
+    viewModel: ResetPassworScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+) {
     val context = LocalContext.current
-    
+    val email = remember { mutableStateOf("") }
+    val keyboardController = KeyboardActions
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -69,15 +75,21 @@ fun ResetPasswordScreen(navController: NavController = NavController(LocalContex
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                TextField(
-                    value = emailResetPassword.value,
-                    onValueChange = { emailResetPassword.value = it },
-                    label = { Text(text = "Digite o Email") })
+                TextField(value = email.value, onValueChange = { email.value = it })
                 Button(onClick = {
-                    Toast.makeText(context, "Email de Recuperação Enviado", Toast.LENGTH_LONG)
-                        .show()
+                    viewModel.Resetpassword(email.value, home = {
+                        navController.navigate(NagitaionScreens.ActiveLifeLoginScreenWithEmail.name)
+                        Toast.makeText(context, "Email de Recuperação Enviado", Toast.LENGTH_LONG)
+                            .show()
+                    }, errors = { task ->
+                        val messenger = task!!.message.toString()
+                        Log.d("Error", "ResetPasswordScreen: $messenger")
+                        Toast.makeText(context, "Email Invalido, ou não encontrado", Toast.LENGTH_LONG).show()
+                    })
+
+
                 }, modifier = Modifier.padding(16.dp), colors = ButtonDefaults.buttonColors()) {
-                    Text(text = "Envie O Email de confirmação")
+                    Text(text = "Envie Email Recuperação de senha")
                 }
             }
         }
