@@ -1,4 +1,4 @@
-package com.iagocarvalho.activelife.screens.loginScreens.EmailLogin
+package com.iagocarvalho.activelife.screens.loginScreens.emailLogin
 
 import android.util.Log
 import android.widget.Toast
@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -31,7 +30,6 @@ import com.iagocarvalho.activelife.R
 import com.iagocarvalho.activelife.constants.UseFormeCreateUser
 import com.iagocarvalho.activelife.constants.UserForm
 import com.iagocarvalho.activelife.navigation.NagitaionScreens
-import dagger.hilt.android.scopes.ViewModelScoped
 
 @Composable
 fun ActiveLifeLoginAndCreateAccScreen(
@@ -142,34 +140,6 @@ fun ActiveLifeLoginAndCreateAccScreen(
                                     })
                             }
                         }
-//                            UserForm(iscreateAcount = true) { email, password ->
-//                                viewModel.createUserWithEmailAndPassword(email, password, home = {
-//                                    navController.navigate(NagitaionScreens.EmailVerification.name)
-//                                        .run {
-//                                            Toast.makeText(
-//                                                context,
-//                                                "Verifique o email",
-//                                                Toast.LENGTH_LONG
-//                                            ).show()
-//                                        }
-//                                }, errors = { task ->
-//                                    val exception = task!!.message.toString()
-//                                    if (exception == "The email address is already in use by another account.") {
-//                                        Log.d("FBTask", "oque aconteceu: ${task.localizedMessage}")
-//                                        Toast.makeText(
-//                                            context,
-//                                            "Usuario Já cadastrado",
-//                                            Toast.LENGTH_LONG
-//                                        ).show()
-//                                    } else {
-//                                        Toast.makeText(
-//                                            context,
-//                                            "A senha deve Conter 6 ou + Caracteres",
-//                                            Toast.LENGTH_LONG
-//                                        ).show()
-//                                    }
-//                                })
-//                            }
                     }
                     Row(
                         modifier = Modifier

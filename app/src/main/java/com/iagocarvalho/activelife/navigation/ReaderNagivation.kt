@@ -8,7 +8,7 @@ import com.iagocarvalho.activelife.screens.AddWorkoutScreen.WorkoutScreen
 import com.iagocarvalho.activelife.screens.ReaderSplashScreen
 import com.iagocarvalho.activelife.screens.fullExerciseScreen.FullExerciceScreen
 import com.iagocarvalho.activelife.screens.homeScreen.HomeScreen
-import com.iagocarvalho.activelife.screens.loginScreens.EmailLogin.ActiveLifeLoginAndCreateAccScreen
+import com.iagocarvalho.activelife.screens.loginScreens.emailLogin.ActiveLifeLoginAndCreateAccScreen
 import com.iagocarvalho.activelife.screens.loginScreens.emailValidation.EmailVerificationScreen
 import com.iagocarvalho.activelife.screens.loginScreens.recoverPassaword.ResetPasswordScreen
 import com.iagocarvalho.activelife.screens.profileScreen.ProfileScreen
