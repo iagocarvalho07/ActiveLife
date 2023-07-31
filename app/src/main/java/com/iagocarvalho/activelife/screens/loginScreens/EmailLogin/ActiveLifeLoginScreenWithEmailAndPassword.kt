@@ -28,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.iagocarvalho.activelife.R
+import com.iagocarvalho.activelife.constants.UseFormeCreateUser
 import com.iagocarvalho.activelife.constants.UserForm
 import com.iagocarvalho.activelife.navigation.NagitaionScreens
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -76,7 +77,7 @@ fun ActiveLifeLoginAndCreateAccScreen(
                 verticalArrangement = Arrangement.Center
             ) {
                 Card {
-                    Column() {
+                    Column {
                         if (showLoginForm.value) {
                             UserForm() { email, password ->
                                 viewModel.FirebaseSignInWithEmailAndPasswordViewModel(
@@ -102,53 +103,93 @@ fun ActiveLifeLoginAndCreateAccScreen(
 
                             }
                         } else {
-                            UserForm(iscreateAcount = true) { email, password ->
-                                viewModel.createUserWithEmailAndPassword(email, password, home = {
-                                    navController.navigate(NagitaionScreens.EmailVerification.name)
-                                        .run {
+                            UseFormeCreateUser() { nome, idade, peso, altura, email, senha ->
+                                viewModel.createUserWithEmailAndPassword(
+                                    nome,
+                                    idade,
+                                    peso,
+                                    altura,
+                                    email,
+                                    senha,
+                                    home = {
+                                        navController.navigate(NagitaionScreens.EmailVerification.name)
+                                            .run {
+                                                Toast.makeText(
+                                                    context,
+                                                    "Verifique o email",
+                                                    Toast.LENGTH_LONG
+                                                ).show()
+                                            }
+                                    }, errors = { task ->
+                                        val exception = task!!.message.toString()
+                                        if (exception == "The email address is already in use by another account.") {
+                                            Log.d(
+                                                "FBTask",
+                                                "oque aconteceu: ${task.localizedMessage}"
+                                            )
                                             Toast.makeText(
                                                 context,
-                                                "Verifique o email",
+                                                "Usuario Já cadastrado",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                        } else {
+                                            Toast.makeText(
+                                                context,
+                                                "A senha deve Conter 6 ou + Caracteres",
                                                 Toast.LENGTH_LONG
                                             ).show()
                                         }
-                                }, errors = { task ->
-                                    val exception = task!!.message.toString()
-                                    if (exception == "The email address is already in use by another account.") {
-                                        Log.d("FBTask", "oque aconteceu: ${task.localizedMessage}")
-                                        Toast.makeText(
-                                            context,
-                                            "Usuario Já cadastrado",
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                    } else {
-                                        Toast.makeText(
-                                            context,
-                                            "A senha deve Conter 6 ou + Caracteres",
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                    }
-                                })
+                                    })
                             }
                         }
-                        Row(
+//                            UserForm(iscreateAcount = true) { email, password ->
+//                                viewModel.createUserWithEmailAndPassword(email, password, home = {
+//                                    navController.navigate(NagitaionScreens.EmailVerification.name)
+//                                        .run {
+//                                            Toast.makeText(
+//                                                context,
+//                                                "Verifique o email",
+//                                                Toast.LENGTH_LONG
+//                                            ).show()
+//                                        }
+//                                }, errors = { task ->
+//                                    val exception = task!!.message.toString()
+//                                    if (exception == "The email address is already in use by another account.") {
+//                                        Log.d("FBTask", "oque aconteceu: ${task.localizedMessage}")
+//                                        Toast.makeText(
+//                                            context,
+//                                            "Usuario Já cadastrado",
+//                                            Toast.LENGTH_LONG
+//                                        ).show()
+//                                    } else {
+//                                        Toast.makeText(
+//                                            context,
+//                                            "A senha deve Conter 6 ou + Caracteres",
+//                                            Toast.LENGTH_LONG
+//                                        ).show()
+//                                    }
+//                                })
+//                            }
+                    }
+                    Row(
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        Text(text = "Esqueceu a senha?", modifier = Modifier
+                            .padding(3.dp)
+                            .clickable { navController.navigate(NagitaionScreens.ResetPasswordScreen.name) })
+                        Text(text = if (showLoginForm.value) "Criar Conta" else "Login",
                             modifier = Modifier
-                                .padding(8.dp)
-                                .fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceEvenly
-                        ) {
-                            Text(text = "Esqueceu a senha?", modifier = Modifier
-                                .padding(3.dp)
-                                .clickable { navController.navigate(NagitaionScreens.ResetPasswordScreen.name) })
-                            Text(text = if (showLoginForm.value) "Criar Conta" else "Login", modifier = Modifier
                                 .padding(3.dp)
                                 .clickable {
                                     showLoginForm.value = !showLoginForm.value
                                 })
-                        }
                     }
                 }
             }
         }
     }
 }
+

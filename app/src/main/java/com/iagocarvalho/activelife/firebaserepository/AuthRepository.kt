@@ -1,12 +1,15 @@
 package com.iagocarvalho.activelife.firebaserepository
 
+import android.graphics.ColorSpace.Model
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import com.iagocarvalho.activelife.model.modelUsers.ModelUser
 
 class AuthRepository {
 
@@ -43,6 +46,10 @@ class AuthRepository {
     }
 
     fun createUserWithEmailAndPassword(
+        name: String,
+        peso: String,
+        altura: String,
+        idade: String,
         email: String,
         password: String,
         home: () -> Unit,
@@ -56,6 +63,14 @@ class AuthRepository {
                         Log.d(
                             "createUser",
                             "createUserWithEmailAndPassword Deu certo: ${task.isSuccessful} "
+                        )
+                        CreatUser(
+                            name = name,
+                            peso = peso,
+                            altura = altura,
+                            idade = idade,
+                            email = email,
+                            avatarURL = ""
                         )
                         home()
                         val user = authRepository.currentUser
@@ -106,5 +121,28 @@ class AuthRepository {
 
     private fun updateUi(user: FirebaseUser?) {
     }
+
+    fun CreatUser(
+        name: String,
+        peso: String,
+        altura: String,
+        idade: String,
+        email: String,
+        avatarURL: String
+    ) {
+        val userId = authRepository.currentUser?.uid
+        val user = ModelUser(
+            userId = userId.toString(),
+            name = name,
+            peso = peso,
+            altura = altura,
+            idade = idade,
+            email = email,
+            avatarURL = avatarURL
+        ).toMap()
+        FirebaseFirestore.getInstance().collection("users")
+            .add(user)
+    }
 }
+
 

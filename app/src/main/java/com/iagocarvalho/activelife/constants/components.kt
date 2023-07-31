@@ -32,6 +32,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.iagocarvalho.activelife.R
@@ -198,4 +199,92 @@ fun SubmitButton(
         if (loadind) CircularProgressIndicator(modifier = Modifier.size(25.dp))
         else Text(text = textId, modifier = Modifier.padding(5.dp))
     }
+}
+
+
+@Preview(showBackground = true)
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun UseFormeCreateUser(
+    loading: Boolean = false,
+    onDone: (String, String, String, String, String, String) -> Unit = { name, peso, altura, idade, email, pws -> }
+) {
+
+    val email = remember { mutableStateOf("") }
+    val password = remember { mutableStateOf("") }
+    val name = remember { mutableStateOf("") }
+    val peso = remember { mutableStateOf("") }
+    val altura = remember { mutableStateOf("") }
+    val idade = remember { mutableStateOf("") }
+
+
+    val passwordVisibility = rememberSaveable { mutableStateOf(false) }
+    val keybordController = LocalSoftwareKeyboardController.current
+    val valid =
+        remember(email.value, password.value, name.value, peso.value, altura.value, idade.value) {
+            email.value.trim().isNotEmpty() && password.value.trim()
+                .isNotEmpty() && name.value.trim().isNotEmpty() && peso.value.trim()
+                .isNotEmpty() && altura.value.trim().isNotEmpty() && idade.value.trim().isNotEmpty()
+        }
+
+    Column() {
+        GenericTextFild(TextFild = name, keyboardType = KeyboardType.Text)
+        GenericTextFild(TextFild = peso, labelId = "Peso em KG", keyboardType = KeyboardType.Number)
+        GenericTextFild(
+            TextFild = altura,
+            labelId = "Altura em Cm",
+           keyboardType = KeyboardType.Number
+        )
+        GenericTextFild(TextFild = idade, labelId = "Idade", keyboardType = KeyboardType.Number)
+        EmailImput(emailState = email)
+        PasswordInput(
+            modifier = Modifier,
+            passwordState = password,
+            labelId = "password",
+            enabled = !loading,
+            passwordVisibility = passwordVisibility
+        )
+        SubmitButton(textId = "Criar Conta", loadind = loading, validInputs = valid) {
+            onDone(
+                name.value.trim(),
+                peso.value.trim(),
+                altura.value.trim(),
+                idade.value.trim(),
+                email.value.trim(),
+                password.value.trim()
+            )
+            keybordController?.hide()
+
+        }
+
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun GenericTextFild(
+    modifier: Modifier = Modifier,
+    TextFild: MutableState<String>,
+    labelId: String = "Name",
+    enableb: Boolean = true,
+    imeAction: ImeAction = ImeAction.Next,
+    action: KeyboardActions = KeyboardActions.Default,
+    keyboardType: KeyboardType
+) {
+    OutlinedTextField(
+        value = TextFild.value,
+        onValueChange = { TextFild.value = it },
+        label = { Text(text = labelId) },
+        singleLine = true,
+        textStyle = TextStyle(
+            fontSize = 18.sp,
+            color = MaterialTheme.colorScheme.onBackground
+        ),
+        modifier = modifier
+            .padding(bottom = 10.dp, start = 10.dp, end = 10.dp)
+            .fillMaxWidth(),
+        enabled = enableb,
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType, imeAction = imeAction),
+        keyboardActions = action
+    )
 }

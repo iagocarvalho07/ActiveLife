@@ -14,12 +14,38 @@ class FlashCardLoginAndCreateAccViewModel() : ViewModel() {
         senha: String,
         home: () -> Unit,
         errors: (Exception?) -> Unit
-    ) { viewModelScope.launch {  AuthRepository().FirebaseSignInWithEmailAndPassword(email, senha, home, errors)}}
+    ) {
+        viewModelScope.launch {
+            AuthRepository().FirebaseSignInWithEmailAndPassword(
+                email,
+                senha,
+                home,
+                errors
+            )
+        }
+    }
 
     fun createUserWithEmailAndPassword(
+        name: String,
+        peso: String,
+        altura: String,
+        idade: String,
         email: String,
         senha: String,
         home: () -> Unit,
         errors: (Exception?) -> Unit
-    ) { viewModelScope.launch { AuthRepository().createUserWithEmailAndPassword(email, senha, home, errors)}}
+    ) {
+        viewModelScope.launch {
+            AuthRepository().createUserWithEmailAndPassword(
+                name,
+                peso,
+                altura,
+                idade,
+                email,
+                senha,
+                home,
+                errors
+            )
+        }
+    }
 }
