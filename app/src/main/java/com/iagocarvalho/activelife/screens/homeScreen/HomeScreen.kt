@@ -1,5 +1,6 @@
 package com.iagocarvalho.activelife.screens.homeScreen
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -43,6 +44,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.iagocarvalho.activelife.R
 import com.iagocarvalho.activelife.navigation.NagitaionScreens
@@ -57,9 +59,16 @@ fun HomeScreen(navController: NavController = NavController(LocalContext.current
 @Composable
 fun ScaffoldScreen(
     navController: NavController,
-    viewModel: HomeScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    viewModel: HomeScreenViewModel = viewModel()
 ) {
+
     val context = LocalContext.current
+    val getData = viewModel.state.value
+    Log.d("dataname", "ScaffoldScreen: ${getData.display_name}")
+
+
+
+
     Scaffold(topBar = {
         TopAppBarScren(navController = navController, PageTitle = "Home") {
             viewModel.sigOut()
@@ -93,32 +102,43 @@ fun ScaffoldScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
+
+
                         Column(modifier = Modifier) {
-                            Text(text = "User!",                                        style = TextStyle(
-                                fontSize = 15.sp,
-                                fontFamily = FontFamily.Serif,
-                                fontWeight = FontWeight(700),
-                                color = Color.Black,
-                            ))
-                            Text(text = "Altura: 1,65",                                        style = TextStyle(
-                                fontSize = 15.sp,
-                                fontFamily = FontFamily.Serif,
-                                fontWeight = FontWeight(700),
-                                color = Color.Black,
-                            ))
-                            Text(text = "Peso: 75KG",                                        style = TextStyle(
-                                fontSize = 15.sp,
-                                fontFamily = FontFamily.Serif,
-                                fontWeight = FontWeight(700),
-                                color = Color.Black,
-                            ))
+
+                            Text(
+                                text ="Usuario:  ${getData.display_name}", style = TextStyle(
+                                    fontSize = 15.sp,
+                                    fontFamily = FontFamily.Serif,
+                                    fontWeight = FontWeight(700),
+                                    color = Color.Black,
+                                )
+                            )
+                            Text(
+                                text = "Altura: ${getData.altura}", style = TextStyle(
+                                    fontSize = 15.sp,
+                                    fontFamily = FontFamily.Serif,
+                                    fontWeight = FontWeight(700),
+                                    color = Color.Black,
+                                )
+                            )
+                            Text(
+                                text = "Peso: ${getData.peso}", style = TextStyle(
+                                    fontSize = 15.sp,
+                                    fontFamily = FontFamily.Serif,
+                                    fontWeight = FontWeight(700),
+                                    color = Color.Black,
+                                )
+                            )
                         }
-                        Text(text = "Categoria: Iniciante",                                        style = TextStyle(
-                            fontSize = 15.sp,
-                            fontFamily = FontFamily.Serif,
-                            fontWeight = FontWeight(700),
-                            color = Color.Black,
-                        ))
+                        Text(
+                            text = "Categoria: Iniciante", style = TextStyle(
+                                fontSize = 15.sp,
+                                fontFamily = FontFamily.Serif,
+                                fontWeight = FontWeight(700),
+                                color = Color.Black,
+                            )
+                        )
                         Image(imageVector = Icons.Default.Person, contentDescription = "")
                     }
 
@@ -285,7 +305,7 @@ fun CardTreiner(navController: NavController, isHomeScreen: Boolean = true) {
                                         )
                                     )
                                 }
-                                if (isHomeScreen){
+                                if (isHomeScreen) {
                                     Button(
                                         onClick = { navController.navigate(NagitaionScreens.WorkoutABCScreen.name) },
                                         modifier = Modifier,

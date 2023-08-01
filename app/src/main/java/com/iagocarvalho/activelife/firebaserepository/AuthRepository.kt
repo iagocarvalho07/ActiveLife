@@ -1,6 +1,5 @@
 package com.iagocarvalho.activelife.firebaserepository
 
-import android.graphics.ColorSpace.Model
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -132,8 +131,8 @@ class AuthRepository {
     ) {
         val userId = authRepository.currentUser?.uid
         val user = ModelUser(
-            userId = userId.toString(),
-            name = name,
+            user_id = userId.toString(),
+            display_name = name,
             peso = peso,
             altura = altura,
             idade = idade,
@@ -142,7 +141,11 @@ class AuthRepository {
         ).toMap()
         FirebaseFirestore.getInstance().collection("users")
             .add(user)
+            .addOnSuccessListener { Log.d("TAG", "CreatUser: Document criado porra") }
+            .addOnFailureListener { e -> Log.d("TAG", "CreatUser: documento n foi criado $e") }
+
     }
+
 }
 
 

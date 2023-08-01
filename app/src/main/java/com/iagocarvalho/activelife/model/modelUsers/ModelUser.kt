@@ -1,20 +1,20 @@
 package com.iagocarvalho.activelife.model.modelUsers
 
 data class ModelUser(
-    val userId: String,
-    val name: String,
-    val peso: String,
-    val altura: String,
-    val idade: String,
-    val email: String,
-    val avatarURL: String,
+    val user_id: String = "",
+    val display_name: String= "",
+    val peso: String= "",
+    val altura: String= "",
+    val idade: String= "",
+    val email: String= "",
+    val avatarURL: String= "",
 
 
 ){
     fun toMap(): MutableMap<String, Any>{
         return mutableMapOf(
-            "user-id" to this.userId,
-            "display_name" to this.name,
+            "user_id" to this.user_id,
+            "display_name" to this.display_name,
             "peso" to this.peso,
             "altura" to this.altura,
             "idade" to this.idade,
