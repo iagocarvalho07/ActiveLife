@@ -1,6 +1,5 @@
 package com.iagocarvalho.activelife.screens.profileScreen
 
-import android.graphics.Paint.Style
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,8 +16,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -35,9 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
+import com.iagocarvalho.activelife.constants.GenericTextFild
 import com.iagocarvalho.activelife.screens.homeScreen.BottomNavigationScreen
-import com.iagocarvalho.activelife.screens.homeScreen.HomeScreenViewModel
 import com.iagocarvalho.activelife.screens.homeScreen.TopAppBarScren
 
 @Preview(showBackground = true)
@@ -65,20 +61,9 @@ fun ProfileScreen(navController: NavController = NavController(LocalContext.curr
 
             ) {
                 ShowProfile()
-                Text(
-                    text = "Active Life Profile Screen",
-                    style = TextStyle(
-                        fontSize = 45.sp,
-                        fontFamily = FontFamily.Serif,
-                        fontWeight = FontWeight(700),
-                        color = Color(0xFFE47C0E),
-                    )
-                )
             }
         }
-
     }
-
 }
 
 @Preview(showBackground = true)
@@ -87,23 +72,16 @@ fun ShowProfile(
     navController: NavController = NavController(LocalContext.current),
     viewModel: ProfileScreenViewModel = viewModel()
 ) {
-
-
-
     val getDataUserInfo = viewModel.state.value
-
     val styleNumbers = TextStyle(
         fontSize = 20.sp,
         fontFamily = FontFamily.Serif,
         fontWeight = FontWeight(700),
-        color = Color(0xFFE47C0E),
-    )
-
+        color = Color(0xFFE47C0E),)
     val styleString = TextStyle(
         fontSize = 15.sp,
         fontFamily = FontFamily.Serif,
-        fontWeight = FontWeight(700),
-    )
+        fontWeight = FontWeight(700),)
 
     Column(
         modifier = Modifier
@@ -127,7 +105,7 @@ fun ShowProfile(
             text = getDataUserInfo.display_name,
             modifier = Modifier
                 .padding(top = 16.dp)
-                .clickable {  },
+                .clickable { },
             style = styleNumbers
         )
         Card(modifier = Modifier.padding(16.dp)) {
@@ -138,21 +116,19 @@ fun ShowProfile(
                 Arrangement.SpaceAround,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Column() {
+                Column(modifier = Modifier.clickable {  }) {
                     Text(text = "${getDataUserInfo.peso}kg", style = styleNumbers)
                     Text(text = "Peso", style = styleString)
                 }
-                Column() {
+                Column(modifier = Modifier.clickable {  }) {
                     Text(text = "${getDataUserInfo.altura}cm", style = styleNumbers)
                     Text(text = "altura", style = styleString)
                 }
-                Column() {
+                Column(modifier = Modifier.clickable {  }) {
                     Text(text = getDataUserInfo.idade, style = styleNumbers)
                     Text(text = "idade", style = styleString)
                 }
-                Text(text = "Editar", style = styleString)
             }
-
         }
     }
 }
