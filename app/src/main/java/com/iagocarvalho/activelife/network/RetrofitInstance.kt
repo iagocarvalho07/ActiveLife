@@ -24,8 +24,7 @@ object RetrofitInstance {
 
                 // Retorne a solicitação modificada.
                 chain.proceed(newRequest)
-            }.build())
-            .build()
+            }.build()).build()
     }
     val ExerciseDB: ExerciseDBService by lazy {
         retrofit.create(ExerciseDBService::class.java)

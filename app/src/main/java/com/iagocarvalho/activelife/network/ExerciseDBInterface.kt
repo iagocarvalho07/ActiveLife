@@ -6,4 +6,8 @@ import retrofit2.http.GET
 interface ExerciseDBService  {
     @GET("exercises")
     suspend fun getExerciseDb(): ExerciseDB
+
+    @GET("exercises/target/{TargetMucle}")
+    suspend fun getExerciseTargetMuscleDb(): ExerciseDB
+
 }
