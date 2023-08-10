@@ -1,6 +1,5 @@
 package com.iagocarvalho.activelife.network.modelApi
 
-import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey

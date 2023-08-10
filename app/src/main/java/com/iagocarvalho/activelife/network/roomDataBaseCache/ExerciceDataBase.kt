@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.iagocarvalho.activelife.network.modelApi.ExerciseDB
+import com.iagocarvalho.activelife.network.modelApi.ExerciseDBItem
 
-@Database(entities = [ExerciseDB::class], version = 1)
+@Database(entities = [ExerciseDBItem::class], version = 1, exportSchema = false)
 abstract class ExerciceDataBase : RoomDatabase() {
     abstract fun exercice(): ExerciceDao
 
@@ -16,8 +16,10 @@ abstract class ExerciceDataBase : RoomDatabase() {
         @Volatile
         private var INSTANCE: ExerciceDataBase? = null
 
-        fun getInsance(context: Context): ExerciceDataBase = INSTANCE ?: synchronized(this) {
-            INSTANCE ?: buildDataBase(context).also { INSTANCE = it }
+        fun getInsance(context: Context): ExerciceDataBase {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: buildDataBase(context).also { INSTANCE = it }
+            }
         }
 
         private fun buildDataBase(context: Context) = Room.databaseBuilder(
