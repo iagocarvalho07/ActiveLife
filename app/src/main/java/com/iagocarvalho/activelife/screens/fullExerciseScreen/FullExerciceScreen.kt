@@ -56,7 +56,7 @@ fun FullExerciceScreen(
 
     ) {
 
-    val viewModels = viewModel.repositorys.getExercicesFromRoom()
+    val viewModels = viewModel.repositorys.getExercicesFromRoom().collectAsState(listOf()).value
 
     val styleNumbers = TextStyle(
         fontSize = 20.sp,
@@ -202,73 +202,73 @@ fun FullExerciceScreen(
                     }
                 }
 
-//                if (allexercises.value == null) {
-//                    Column(
-//                        modifier = Modifier.fillMaxSize(),
-//                        horizontalAlignment = Alignment.CenterHorizontally,
-//                        verticalArrangement = Arrangement.Center
-//                    ) {
-//                        CircularProgressIndicator()
-//                    }
-//                } else {
-//                    LazyColumn {
-//                        items(allexercises.value!!) { allexercises ->
-//                            Log.d(
-//                                "TestApi",
-//                                "FullExerciceScreen: chamando api  ${allexercises.name}"
-//                            )
-//                            Card(
-//                                modifier = Modifier
-//                                    .fillMaxWidth()
-//                                    .padding(8.dp)
-//                            ) {
-//                                Column(
-//                                    modifier = Modifier.padding(16.dp),
-//                                    horizontalAlignment = Alignment.CenterHorizontally,
-//                                    verticalArrangement = Arrangement.Center
-//                                ) {
-//                                    Row(modifier = Modifier) {
-//                                        val imageLoader =
-//                                            ImageLoader.Builder(context = LocalContext.current)
-//                                                .components {
-//                                                    if (SDK_INT >= 28) {
-//                                                        add(ImageDecoderDecoder.Factory())
-//                                                    } else {
-//                                                        add(GifDecoder.Factory())
-//                                                    }
-//                                                }.build()
-//                                        Box(
-//                                            modifier = Modifier
-//                                                .width(80.dp)
-//                                                .height(80.dp)
-//                                        ) {
-//                                            AsyncImage(
-//                                                model = ImageRequest.Builder(LocalContext.current)
-//                                                    .data(data = allexercises.gifUrl)
-//                                                    .apply(block = {
-//                                                        size(Size.ORIGINAL)
-//                                                    })
-//                                                    .crossfade(true)
-//                                                    .build(), imageLoader = imageLoader,
-//                                                contentDescription = ""
-//                                            )
-//                                        }
-//                                        Column(
-//                                            modifier = Modifier.padding(start = 16.dp),
-//                                            horizontalAlignment = Alignment.Start,
-//                                            verticalArrangement = Arrangement.Center
-//                                        ) {
-//                                            Text(text = allexercises.name, style = styleString)
-//                                            Text(text = allexercises.bodyPart, style = styleString)
-//                                            Text(text = allexercises.equipment, style = styleString)
-//                                        }
-//
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-                //              }
+                if (viewModels == null) {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                } else {
+                    LazyColumn {
+                        items(viewModels) { allexercises ->
+                            Log.d(
+                                "TestApi",
+                                "FullExerciceScreen: chamando api  ${allexercises.name}"
+                            )
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(8.dp)
+                            ) {
+                                Column(
+                                    modifier = Modifier.padding(16.dp),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center
+                                ) {
+                                    Row(modifier = Modifier) {
+                                        val imageLoader =
+                                            ImageLoader.Builder(context = LocalContext.current)
+                                                .components {
+                                                    if (SDK_INT >= 28) {
+                                                        add(ImageDecoderDecoder.Factory())
+                                                    } else {
+                                                        add(GifDecoder.Factory())
+                                                    }
+                                                }.build()
+                                        Box(
+                                            modifier = Modifier
+                                                .width(80.dp)
+                                                .height(80.dp)
+                                        ) {
+                                            AsyncImage(
+                                                model = ImageRequest.Builder(LocalContext.current)
+                                                    .data(data = allexercises.gifUrl)
+                                                    .apply(block = {
+                                                        size(Size.ORIGINAL)
+                                                    })
+                                                    .crossfade(true)
+                                                    .build(), imageLoader = imageLoader,
+                                                contentDescription = ""
+                                            )
+                                        }
+                                        Column(
+                                            modifier = Modifier.padding(start = 16.dp),
+                                            horizontalAlignment = Alignment.Start,
+                                            verticalArrangement = Arrangement.Center
+                                        ) {
+                                            Text(text = allexercises.name, style = styleString)
+                                            Text(text = allexercises.bodyPart, style = styleString)
+                                            Text(text = allexercises.equipment, style = styleString)
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                              }
             }
         }
     }
