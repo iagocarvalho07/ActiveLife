@@ -9,4 +9,5 @@ class ExercicioDbRepository {
     suspend fun getExerciciDb(): ExerciseDB{
         return ExerciseDbService.getExerciseDb()
     }
+
 }

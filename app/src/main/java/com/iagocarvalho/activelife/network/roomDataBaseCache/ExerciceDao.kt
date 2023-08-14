@@ -16,10 +16,13 @@ interface ExerciceDao {
     suspend fun addExercices(employee: ExerciseDBItem)
 
     @Query("SELECT * FROM Exercises")
-    fun getAllEmployees(): Flow<List<ExerciseDBItem>>
+    fun getAllExercises(): Flow<List<ExerciseDBItem>>
+
+    @Query("SELECT * FROM Exercises WHERE id = :id")
+    suspend fun getExercises(id: Int): ExerciseDBItem
 
     @Update
-    suspend fun updateEmployeeDetails(employee: ExerciseDBItem)
+    suspend fun updateExerciesDetails(employee: ExerciseDBItem)
 
     @Delete
     suspend fun deleteEmployee(employee: ExerciseDBItem)

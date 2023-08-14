@@ -23,6 +23,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,6 +42,8 @@ import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import coil.size.Size
+import com.iagocarvalho.activelife.network.roomDataBaseCache.ExerciceDao
+import com.iagocarvalho.activelife.network.roomDataBaseCache.ExerciceRoomRepositoryIMPL
 import com.iagocarvalho.activelife.screens.homeScreen.BottomNavigationScreen
 import com.iagocarvalho.activelife.screens.homeScreen.TopAppBarScren
 
@@ -49,8 +52,11 @@ import com.iagocarvalho.activelife.screens.homeScreen.TopAppBarScren
 @Composable
 fun FullExerciceScreen(
     navController: NavController = NavController(LocalContext.current),
-    viewModel: FullExerciceScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
-) {
+    viewModel: FullExerciceScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+
+    ) {
+
+    val viewModels = viewModel.repositorys.getExercicesFromRoom()
 
     val styleNumbers = TextStyle(
         fontSize = 20.sp,
@@ -64,7 +70,6 @@ fun FullExerciceScreen(
         fontWeight = FontWeight(700),
     )
 
-    val allexercises = viewModel.ExerciseDBview.collectAsState(null)
     Scaffold(topBar = {
         TopAppBarScren(
             navController = navController,
@@ -91,61 +96,112 @@ fun FullExerciceScreen(
                 ) {
                     LazyRow {
                         item() {
-                            Row(modifier = Modifier
-                                .fillMaxWidth().padding(4.dp)
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(4.dp)
                             ) {
-                                Button(onClick = { /*TODO*/ }, modifier = Modifier.padding(end = 8.dp)) {
+                                Button(
+                                    onClick = { /*TODO*/ },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                ) {
                                     Text(text = "abductors")
                                 }
-                                Button(onClick = { /*TODO*/ }, modifier = Modifier.padding(end = 8.dp)) {
+                                Button(
+                                    onClick = { /*TODO*/ },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                ) {
                                     Text(text = "abs")
                                 }
-                                Button(onClick = { /*TODO*/ }, modifier = Modifier.padding(end = 8.dp)) {
+                                Button(
+                                    onClick = { /*TODO*/ },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                ) {
                                     Text(text = "adductors")
                                 }
-                                Button(onClick = { /*TODO*/ }, modifier = Modifier.padding(end = 8.dp)) {
+                                Button(
+                                    onClick = { /*TODO*/ },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                ) {
                                     Text(text = "biceps")
                                 }
-                                Button(onClick = { /*TODO*/ }, modifier = Modifier.padding(end = 8.dp)) {
+                                Button(
+                                    onClick = { /*TODO*/ },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                ) {
                                     Text(text = "cardiovascular system")
                                 }
-                                Button(onClick = { /*TODO*/ }, modifier = Modifier.padding(end = 8.dp)) {
+                                Button(
+                                    onClick = { /*TODO*/ },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                ) {
                                     Text(text = "delts")
                                 }
-                                Button(onClick = { /*TODO*/ }, modifier = Modifier.padding(end = 8.dp)) {
+                                Button(
+                                    onClick = { /*TODO*/ },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                ) {
                                     Text(text = "forearms")
                                 }
-                                Button(onClick = { /*TODO*/ }, modifier = Modifier.padding(end = 8.dp)) {
+                                Button(
+                                    onClick = { /*TODO*/ },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                ) {
                                     Text(text = "glutes")
                                 }
-                                Button(onClick = { /*TODO*/ }, modifier = Modifier.padding(end = 8.dp)) {
+                                Button(
+                                    onClick = { /*TODO*/ },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                ) {
                                     Text(text = "hamstrings")
                                 }
-                                Button(onClick = { /*TODO*/ }, modifier = Modifier.padding(end = 8.dp)) {
+                                Button(
+                                    onClick = { /*TODO*/ },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                ) {
                                     Text(text = "levator scapulae")
                                 }
-                                Button(onClick = { /*TODO*/ }, modifier = Modifier.padding(end = 8.dp)) {
+                                Button(
+                                    onClick = { /*TODO*/ },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                ) {
                                     Text(text = "pectorals")
                                 }
-                                Button(onClick = { /*TODO*/ }, modifier = Modifier.padding(end = 8.dp)) {
+                                Button(
+                                    onClick = { /*TODO*/ },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                ) {
                                     Text(text = "quads")
                                 }
-                                Button(onClick = { /*TODO*/ }, modifier = Modifier.padding(end = 8.dp)) {
+                                Button(
+                                    onClick = { /*TODO*/ },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                ) {
                                     Text(text = "serratus anterior")
                                 }
-                                Button(onClick = { /*TODO*/ }, modifier = Modifier.padding(end = 8.dp)) {
+                                Button(
+                                    onClick = { /*TODO*/ },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                ) {
                                     Text(text = "traps")
                                 }
-                                Button(onClick = { /*TODO*/ }, modifier = Modifier.padding(end = 8.dp)) {
+                                Button(
+                                    onClick = { /*TODO*/ },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                ) {
                                     Text(text = "triceps")
                                 }
-                                Button(onClick = { /*TODO*/ }, modifier = Modifier.padding(end = 8.dp)) {
+                                Button(
+                                    onClick = { /*TODO*/ },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                ) {
                                     Text(text = "upper back")
                                 }
                             }
                         }
                     }
                 }
+
 //                if (allexercises.value == null) {
 //                    Column(
 //                        modifier = Modifier.fillMaxSize(),

@@ -8,24 +8,24 @@ import com.iagocarvalho.activelife.network.modelApi.ExerciseDBItem
 
 @Database(entities = [ExerciseDBItem::class], version = 1, exportSchema = false)
 abstract class ExerciceDataBase : RoomDatabase() {
-    abstract fun exercice(): ExerciceDao
+    abstract fun ExerciceDao(): ExerciceDao
 
     companion object {
-        private const val DATABASE_NAME: String = "EXERCICE_BANCO"
-
-        @Volatile
         private var INSTANCE: ExerciceDataBase? = null
-
-        fun getInsance(context: Context): ExerciceDataBase {
-            return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: buildDataBase(context).also { INSTANCE = it }
+        fun getInstance(context: Context): ExerciceDataBase {
+            synchronized(this) {
+                var instance = INSTANCE
+                if (instance == null) {
+                    instance = Room.databaseBuilder(
+                        context.applicationContext,
+                        ExerciceDataBase::class.java,
+                        "Exercise_list_database"
+                    ).fallbackToDestructiveMigration()
+                        .build()
+                    INSTANCE = instance
+                }
+                return instance
             }
         }
-
-        private fun buildDataBase(context: Context) = Room.databaseBuilder(
-            context.applicationContext,
-            ExerciceDataBase::class.java,
-            DATABASE_NAME
-        ).build()
     }
 }
