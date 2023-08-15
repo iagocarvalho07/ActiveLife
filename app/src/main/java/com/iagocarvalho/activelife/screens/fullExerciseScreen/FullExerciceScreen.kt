@@ -2,7 +2,11 @@ package com.iagocarvalho.activelife.screens.fullExerciseScreen
 
 import android.os.Build.VERSION.SDK_INT
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,16 +19,23 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,6 +53,9 @@ import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import coil.size.Size
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import com.iagocarvalho.activelife.network.roomDataBaseCache.ExerciceDao
 import com.iagocarvalho.activelife.network.roomDataBaseCache.ExerciceRoomRepositoryIMPL
 import com.iagocarvalho.activelife.screens.homeScreen.BottomNavigationScreen
@@ -217,6 +231,23 @@ fun FullExerciceScreen(
                                 "TestApi",
                                 "FullExerciceScreen: chamando api  ${allexercises.name}"
                             )
+                            val expande = remember { mutableStateOf(false) }
+
+                            val treinoA = remember {
+                                mutableStateOf(false)
+                            }
+                            val treinoB = remember {
+                                mutableStateOf(false)
+                            }
+                            val treinoC = remember {
+                                mutableStateOf(false)
+                            }
+                            val treinoD = remember {
+                                mutableStateOf(false)
+                            }
+
+                            val firebaseTreinos = FirebaseFirestore.getInstance()
+
                             Card(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -224,7 +255,7 @@ fun FullExerciceScreen(
                             ) {
                                 Column(
                                     modifier = Modifier.padding(16.dp),
-                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    horizontalAlignment = Alignment.Start,
                                     verticalArrangement = Arrangement.Center
                                 ) {
                                     Row(modifier = Modifier) {
@@ -262,13 +293,82 @@ fun FullExerciceScreen(
                                             Text(text = allexercises.bodyPart, style = styleString)
                                             Text(text = allexercises.equipment, style = styleString)
                                         }
+                                    }
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.SpaceEvenly
+                                    ) {
+                                        Text(text = "Adicionar ao Treino   ->")
+                                        Icon(imageVector = if (expande.value) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp,
+                                            contentDescription = "",
+                                            modifier = Modifier.clickable {
+                                                expande.value = !expande.value
+                                            })
+                                    }
+                                    AnimatedVisibility(
+                                        visible = expande.value,
+                                        enter = fadeIn(),
+                                        exit = fadeOut()
+                                    ) {
+                                        Row(
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.Center
+                                        ) {
+                                            Column(
+                                                verticalArrangement = Arrangement.Center,
+                                                horizontalAlignment = Alignment.CenterHorizontally
+                                            ) {
+                                                RadioButton(
+                                                    selected = treinoA.value,
+                                                    onClick = { treinoA.value = !treinoA.value })
+                                                Text(text = "A")
 
+                                            }
+                                            Column(
+                                                verticalArrangement = Arrangement.Center,
+                                                horizontalAlignment = Alignment.CenterHorizontally
+                                            ) {
+                                                RadioButton(
+                                                    selected = treinoB.value,
+                                                    onClick = { treinoB.value = !treinoB.value })
+                                                Text(text = "B")
+                                            }
+                                            Column(
+                                                verticalArrangement = Arrangement.Center,
+                                                horizontalAlignment = Alignment.CenterHorizontally
+                                            ) {
+                                                RadioButton(
+                                                    selected = treinoC.value,
+                                                    onClick = { treinoC.value = !treinoC.value })
+                                                Text(text = "C")
+                                            }
+
+                                            Column(
+                                                verticalArrangement = Arrangement.Center,
+                                                horizontalAlignment = Alignment.CenterHorizontally
+                                            ) {
+                                                RadioButton(
+                                                    selected = treinoD.value,
+                                                    onClick = { treinoD.value = !treinoD.value })
+                                                Text(text = "D")
+                                            }
+                                            Button(onClick = {
+                                                if (treinoA.value) {
+                                                    firebaseTreinos.collection("TreinoA").document(
+                                                        Firebase.auth.currentUser!!.uid
+                                                    )
+                                                }
+                                            }) {
+                                                Text(text = "Adicionar")
+
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                              }
+                }
             }
         }
     }

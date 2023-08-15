@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.google.firebase.FirebaseException
 import com.iagocarvalho.activelife.R
 import com.iagocarvalho.activelife.constants.UseFormeCreateUser
 import com.iagocarvalho.activelife.constants.UserForm
@@ -39,6 +40,8 @@ fun ActiveLifeLoginAndCreateAccScreen(
 
     val showLoginForm = remember { mutableStateOf(true) }
     val context = LocalContext.current
+
+    val FirebaseException: FirebaseException
 
     Column(
         modifier = Modifier
@@ -91,14 +94,25 @@ fun ActiveLifeLoginAndCreateAccScreen(
                                                 ).show()
                                             }
                                     },
-                                    errors = {
-                                        Toast.makeText(
-                                            context,
-                                            "Erro na senha ou email",
-                                            Toast.LENGTH_LONG
-                                        ).show()
+                                    errors = { task ->
+                                        Log.d(
+                                            "FireBaseError",
+                                            "ActiveLifeLoginAndCreateAccScreen: ${task!!.message} "
+                                        )
+                                        if (task.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred.") {
+                                            Toast.makeText(
+                                                context,
+                                                "Verifique sua Conexãol",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                        } else {
+                                            Toast.makeText(
+                                                context,
+                                                "Erro na senha ou email",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                        }
                                     })
-
                             }
                         } else {
                             UseFormeCreateUser() { nome, idade, peso, altura, email, senha ->
@@ -120,6 +134,7 @@ fun ActiveLifeLoginAndCreateAccScreen(
                                             }
                                     }, errors = { task ->
                                         val exception = task!!.message.toString()
+
                                         if (exception == "The email address is already in use by another account.") {
                                             Log.d(
                                                 "FBTask",
