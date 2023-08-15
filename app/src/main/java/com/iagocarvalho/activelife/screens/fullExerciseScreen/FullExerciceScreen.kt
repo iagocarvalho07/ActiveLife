@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -36,6 +37,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -56,10 +58,13 @@ import coil.size.Size
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import com.iagocarvalho.activelife.network.modelApi.ExerciseDB
 import com.iagocarvalho.activelife.network.roomDataBaseCache.ExerciceDao
 import com.iagocarvalho.activelife.network.roomDataBaseCache.ExerciceRoomRepositoryIMPL
 import com.iagocarvalho.activelife.screens.homeScreen.BottomNavigationScreen
 import com.iagocarvalho.activelife.screens.homeScreen.TopAppBarScren
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
@@ -71,6 +76,8 @@ fun FullExerciceScreen(
     ) {
 
     val viewModels = viewModel.repositorys.getExercicesFromRoom().collectAsState(listOf()).value
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     val styleNumbers = TextStyle(
         fontSize = 20.sp,
@@ -294,16 +301,29 @@ fun FullExerciceScreen(
                                             Text(text = allexercises.equipment, style = styleString)
                                         }
                                     }
+                                    Spacer(modifier = Modifier.height(4.dp))
                                     Row(
                                         modifier = Modifier.fillMaxWidth(),
                                         horizontalArrangement = Arrangement.SpaceEvenly
                                     ) {
-                                        Text(text = "Adicionar ao Treino   ->")
-                                        Icon(imageVector = if (expande.value) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp,
-                                            contentDescription = "",
-                                            modifier = Modifier.clickable {
-                                                expande.value = !expande.value
-                                            })
+                                        Card(elevation = CardDefaults.cardElevation(defaultElevation = 20.dp),
+                                            colors = CardDefaults.cardColors(containerColor = Color.LightGray),
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .clickable { expande.value = !expande.value }) {
+                                            Row(
+                                                modifier = Modifier.fillMaxWidth(),
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                horizontalArrangement = Arrangement.SpaceEvenly
+                                            ) {
+                                                Text(text = "Adicionar ao Treino   ->")
+                                                Icon(imageVector = if (expande.value) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp,
+                                                    contentDescription = "",
+                                                    modifier = Modifier.clickable {
+                                                        expande.value = !expande.value
+                                                    })
+                                            }
+                                        }
                                     }
                                     AnimatedVisibility(
                                         visible = expande.value,
@@ -354,9 +374,56 @@ fun FullExerciceScreen(
                                             }
                                             Button(onClick = {
                                                 if (treinoA.value) {
-                                                    firebaseTreinos.collection("TreinoA").document(
-                                                        Firebase.auth.currentUser!!.uid
-                                                    )
+                                                    scope.launch(Dispatchers.IO) {
+                                                        viewModel.saveWorkOut(
+                                                            allexercises.bodyPart,
+                                                            allexercises.equipment,
+                                                            allexercises.gifUrl,
+                                                            allexercises.id,
+                                                            allexercises.name,
+                                                            allexercises.target,
+                                                            "treinoA"
+                                                        )
+                                                    }
+                                                }
+                                                if (treinoB.value) {
+                                                    scope.launch(Dispatchers.IO) {
+                                                        viewModel.saveWorkOut(
+                                                            allexercises.bodyPart,
+                                                            allexercises.equipment,
+                                                            allexercises.gifUrl,
+                                                            allexercises.id,
+                                                            allexercises.name,
+                                                            allexercises.target,
+                                                            "treinoB"
+                                                        )
+                                                    }
+                                                }
+                                                if (treinoC.value) {
+                                                    scope.launch(Dispatchers.IO) {
+                                                        viewModel.saveWorkOut(
+                                                            allexercises.bodyPart,
+                                                            allexercises.equipment,
+                                                            allexercises.gifUrl,
+                                                            allexercises.id,
+                                                            allexercises.name,
+                                                            allexercises.target,
+                                                            "treinoC"
+                                                        )
+                                                    }
+                                                }
+                                                if (treinoD.value) {
+                                                    scope.launch(Dispatchers.IO) {
+                                                        viewModel.saveWorkOut(
+                                                            allexercises.bodyPart,
+                                                            allexercises.equipment,
+                                                            allexercises.gifUrl,
+                                                            allexercises.id,
+                                                            allexercises.name,
+                                                            allexercises.target,
+                                                            "treinoD"
+                                                        )
+                                                    }
                                                 }
                                             }) {
                                                 Text(text = "Adicionar")
@@ -373,3 +440,20 @@ fun FullExerciceScreen(
         }
     }
 }
+
+
+//firebaseTreinos.collection("users").document(Firebase.auth.currentUser!!.uid)
+//.set(allexercises)
+//.addOnSuccessListener { documeteReference ->
+//    Log.d(
+//        "AddWorkout",
+//        "AddWorkout: ${documeteReference}"
+//    )
+//}
+//.addOnFailureListener { e ->
+//    Log.w(
+//        "AddWorkout",
+//        "Error adding document",
+//        e
+//    )
+//}

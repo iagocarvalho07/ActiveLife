@@ -9,8 +9,9 @@ import com.iagocarvalho.activelife.model.modelUsers.ModelUser
 import kotlinx.coroutines.tasks.await
 
 class DataSorce {
+    val db = FirebaseFirestore.getInstance()
+
     suspend fun getDataUsersFromFireStore(): ModelUser {
-        val db = FirebaseFirestore.getInstance()
         var modelUser = ModelUser()
         val currentuser = Firebase.auth.currentUser
 
@@ -24,6 +25,5 @@ class DataSorce {
         }
         return modelUser
     }
-
 }
 
