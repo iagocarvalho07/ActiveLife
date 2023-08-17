@@ -47,7 +47,25 @@ class ExercicioDbRepository {
 
         ).toMap()
         db.collection(treino).add(exerciceMap)
-            .addOnCompleteListener { task -> Log.d("saveWorkout", "saveWorkout: $task") }
+            .addOnCompleteListener { task ->
+                val docId = task.result.id
+                Log.d("saveWorkoutDeucertoafasda", "saveWorkout: ${task.result.id}")
+                    db.collection(treino).document(docId).update("documenteId", docId)
+                        .addOnCompleteListener { tasks ->
+                            Log.d(
+                                "saveWorkoutDeucertoafasda",
+                                "saveWorkout: ${tasks.result}"
+                            )
+                        }
+                        .addOnFailureListener {
+                            Log.d(
+                                "FBD",
+                                "saveToFireBase: Error updating doc",
+                                it
+                            )
+                        }
+                Log.d("saveWorkout", "saveWorkout: ${task.result.id}")
+            }
             .addOnFailureListener { task -> Log.w("saveWorkout", "saveWorkout: ${task.message}") }
 
 
@@ -67,7 +85,35 @@ class ExercicioDbRepository {
                     }
                 }
             }
-            .addOnFailureListener { task -> Log.d("getWorkOutFromFB", "getWorkOutFromFB: ${task.message}") }
+            .addOnFailureListener { task ->
+                Log.d(
+                    "getWorkOutFromFB",
+                    "getWorkOutFromFB: ${task.message}"
+                )
+            }
         return getAllExercicesFB
+    }
+
+    fun updateWorkoutFromFb(
+        treino: String,
+        documenteId: String,
+        repeticoes: String,
+        series: String,
+        cargar: String
+    ) {
+        db.collection(treino).document(documenteId)
+            .update("cargar", cargar)
+            .addOnCompleteListener { task ->
+                Log.d(
+                    "getWorkOutFromFB",
+                    "updateWorkoutFromFb: ${task.result}"
+                )
+            }
+            .addOnFailureListener { task ->
+                Log.d(
+                    "getWorkOutFromFB",
+                    "updateWorkoutFromFb: ${task.message}"
+                )
+            }
     }
 }

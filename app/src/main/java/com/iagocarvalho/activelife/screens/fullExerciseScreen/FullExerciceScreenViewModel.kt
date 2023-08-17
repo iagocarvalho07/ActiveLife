@@ -4,11 +4,10 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.iagocarvalho.activelife.firebaserepository.DataSorce
 import com.iagocarvalho.activelife.network.ExercicioDbRepository
 import com.iagocarvalho.activelife.network.roomDataBaseCache.ExerciceDataBase
 import com.iagocarvalho.activelife.network.roomDataBaseCache.ExerciceRoomRepositoryIMPL
-import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.launch
 
 
@@ -35,13 +34,13 @@ class FullExerciceScreenViewModel(
         viewModelScope.launch {
             try {
                 val allExercises = repository.getExerciciDb()
-                if (banco.toList().isEmpty()) {
-                    Log.d("Rooo", "fetExerciceDbView: ${banco.toList()} ")
+ //               Log.d("tavindodaapi?", "fetExerciceDbView: $allExercises")
+                if (banco.count() < 2) {
                     for (exercices in allExercises) {
                         Log.d("RoomTeste", "fetExerciceDbView: $exercices")
                         repositorys.addExercicesToRoom(exercices)
-                    }
 
+                    }
                 }
 
             } catch (e: Exception) {

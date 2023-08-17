@@ -4,11 +4,8 @@ import androidx.lifecycle.ViewModel
 import com.iagocarvalho.activelife.model.modelUsers.ModelExerciceFB
 import com.iagocarvalho.activelife.network.ExercicioDbRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 
 class WorkoutABCScreenViewModel: ViewModel() {
-
-    val state = MutableStateFlow<MutableList<ModelExerciceFB>>(mutableListOf())
     private val dataStore =  ExercicioDbRepository()
 
     init {
@@ -17,5 +14,10 @@ class WorkoutABCScreenViewModel: ViewModel() {
 
     fun getExerciceFb(): Flow<MutableList<ModelExerciceFB>> {
        return dataStore.getWorkOutFromFB()
+    }
+
+    fun updateWorkOut(treino: String,documenteId: String,repeticoes : String, series: String, cargar: String){
+        return dataStore.updateWorkoutFromFb(treino, documenteId, repeticoes, series, cargar)
+
     }
 }
