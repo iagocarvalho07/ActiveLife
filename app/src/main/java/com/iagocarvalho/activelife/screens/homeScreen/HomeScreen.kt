@@ -144,7 +144,6 @@ fun ScaffoldScreen(
 
                 }
                 CardTreiner(navController = navController)
-                CardTreiner(navController = navController)
             }
         }
     }

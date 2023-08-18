@@ -19,8 +19,6 @@ class FullExerciceScreenViewModel(
         ExerciceDataBase.getInstance(application.applicationContext)
             .ExerciceDao()
     )
-
-
     //private val _ExerciceDBview = MutableStateFlow(ExerciseDB())
     //val ExerciseDBview: StateFlow<ExerciseDB> = _ExerciceDBview.asStateFlow()
     init {
@@ -35,16 +33,13 @@ class FullExerciceScreenViewModel(
             try {
                 val allExercises = repository.getExerciciDb()
  //               Log.d("tavindodaapi?", "fetExerciceDbView: $allExercises")
-                if (banco.count() < 2) {
                     for (exercices in allExercises) {
                         Log.d("RoomTeste", "fetExerciceDbView: $exercices")
                         repositorys.addExercicesToRoom(exercices)
-
-                    }
                 }
 
             } catch (e: Exception) {
-                Log.d("NETWORK API SERVICE", "fetExerciceDbView: ${e.message}")
+                Log.d("NETWORKAPISERVICE", "fetExerciceDbView: ${e.message}")
             }
         }
     }

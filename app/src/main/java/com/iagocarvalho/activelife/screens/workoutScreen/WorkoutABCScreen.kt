@@ -127,28 +127,28 @@ fun ExerciseFromFBWorkOut(
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            val imageLoader =
-                ImageLoader.Builder(LocalContext.current)
-                    .components {
-                        if (Build.VERSION.SDK_INT >= 28) {
-                            add(ImageDecoderDecoder.Factory())
-                        } else {
-                            add(GifDecoder.Factory())
-                        }
-                    }.build()
-
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(data = exercices.gif_url)
-                    .apply(block = { size(Size.ORIGINAL) })
-                    .crossfade(true)
-                    .build(),
-                contentDescription = "",
-                modifier = Modifier
-                    .height(80.dp)
-                    .width(80.dp),
-                imageLoader = imageLoader
-            )
+//            val imageLoader =
+//                ImageLoader.Builder(LocalContext.current)
+//                    .components {
+//                        if (Build.VERSION.SDK_INT >= 28) {
+//                            add(ImageDecoderDecoder.Factory())
+//                        } else {
+//                            add(GifDecoder.Factory())
+//                        }
+//                    }.build()
+//
+//            AsyncImage(
+//                model = ImageRequest.Builder(LocalContext.current)
+//                    .data(data = exercices.gif_url)
+//                    .apply(block = { size(Size.ORIGINAL) })
+//                    .crossfade(true)
+//                    .build(),
+//                contentDescription = "",
+//                modifier = Modifier
+//                    .height(80.dp)
+//                    .width(80.dp),
+//                imageLoader = imageLoader
+//            )
             Column(
                 modifier = Modifier.fillMaxHeight(),
                 verticalArrangement = Arrangement.SpaceAround
@@ -209,19 +209,60 @@ fun ExerciseFromFBWorkOut(
                     text = "Diga: Atualize sua carga, repetiçoes e series, acompanhe seu progreço constantemente "
 
                 )
-                GenericTextFild(TextFild = repeticoes, keyboardType = KeyboardType.Number, labelId = "Repetiçoes")
-                GenericTextFild(TextFild = Series, keyboardType = KeyboardType.Number, labelId = "Series")
-                GenericTextFild(TextFild = carga, keyboardType = KeyboardType.Number, labelId = "Cargar: Kg")
+                GenericTextFild(
+                    TextFild = repeticoes,
+                    keyboardType = KeyboardType.Number,
+                    labelId = "Repetiçoes"
+                )
+                GenericTextFild(
+                    TextFild = Series,
+                    keyboardType = KeyboardType.Number,
+                    labelId = "Series"
+                )
+                GenericTextFild(
+                    TextFild = carga,
+                    keyboardType = KeyboardType.Number,
+                    labelId = "Cargar: Kg"
+                )
                 SubmitButton(textId = "Atualizar", loadind = false, validInputs = true) {
-                    if (carga.value.isNotEmpty()){
-                        getfunbyViewModel.updateWorkOut("treinoA", exercices.documenteId, repeticoes.value, Series.value, carga.value).run {
-                            Toast.makeText(context, "Treino Atualizado com sucesso", Toast.LENGTH_SHORT).show()
+                    expanded.value = !expanded.value
+                    if (carga.value.isNotEmpty()) {
+                        getfunbyViewModel.updateWorkOut(
+                            "treinoA",
+                            "cargar",
+                            exercices.documenteId,
+                            repeticoes.value,
+                            Series.value,
+                            carga.value
+                        ).run {
+                            Toast.makeText(
+                                context,
+                                "Treino Atualizado com sucesso",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
-
-
-
                     }
 
+                    if (repeticoes.value.isNotEmpty()) {
+                        getfunbyViewModel.updateWorkOut(
+                            "treinoA",
+                            "cargar",
+                            exercices.documenteId,
+                            repeticoes.value,
+                            Series.value,
+                            carga.value
+                        )
+                    }
+                    if (Series.value.isNotEmpty()) {
+                        getfunbyViewModel.updateWorkOut(
+                            "treinoA",
+                            "cargar",
+                            exercices.documenteId,
+                            repeticoes.value,
+                            Series.value,
+                            carga.value
+                        )
+                    }
                 }
             }
         }

@@ -5,19 +5,26 @@ import com.iagocarvalho.activelife.model.modelUsers.ModelExerciceFB
 import com.iagocarvalho.activelife.network.ExercicioDbRepository
 import kotlinx.coroutines.flow.Flow
 
-class WorkoutABCScreenViewModel: ViewModel() {
-    private val dataStore =  ExercicioDbRepository()
+class WorkoutABCScreenViewModel : ViewModel() {
+    private val dataStore = ExercicioDbRepository()
 
     init {
         getExerciceFb()
     }
 
     fun getExerciceFb(): Flow<MutableList<ModelExerciceFB>> {
-       return dataStore.getWorkOutFromFB()
+        return dataStore.getWorkOutFromFB()
     }
 
-    fun updateWorkOut(treino: String,documenteId: String,repeticoes : String, series: String, cargar: String){
-        return dataStore.updateWorkoutFromFb(treino, documenteId, repeticoes, series, cargar)
+    fun updateWorkOut(
+        treino: String,
+        campo: String,
+        documenteId: String,
+        repeticoes: String,
+        series: String,
+        cargar: String
+    ) {
+        return dataStore.updateWorkoutFromFb(treino, campo, documenteId, repeticoes, series, cargar)
 
     }
 }

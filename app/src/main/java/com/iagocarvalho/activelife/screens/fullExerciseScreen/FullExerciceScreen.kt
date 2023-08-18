@@ -253,8 +253,6 @@ fun FullExerciceScreen(
                                 mutableStateOf(false)
                             }
 
-                            val firebaseTreinos = FirebaseFirestore.getInstance()
-
                             Card(
                                 modifier = Modifier
                                     .fillMaxWidth()
