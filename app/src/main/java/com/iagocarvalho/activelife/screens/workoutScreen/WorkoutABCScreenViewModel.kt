@@ -18,13 +18,11 @@ class WorkoutABCScreenViewModel : ViewModel() {
 
     fun updateWorkOut(
         treino: String,
-        campo: String,
+        qualTrienoABCD: String,
         documenteId: String,
-        repeticoes: String,
-        series: String,
-        cargar: String
+        tipoCargaOuRepsOuSeries: String
     ) {
-        return dataStore.updateWorkoutFromFb(treino, campo, documenteId, repeticoes, series, cargar)
+        return dataStore.updateWorkoutFromFb(treino, qualTrienoABCD, documenteId, tipoCargaOuRepsOuSeries)
 
     }
 }

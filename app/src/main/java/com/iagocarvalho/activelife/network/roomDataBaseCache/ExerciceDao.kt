@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ExerciceDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addExercices(employee: ExerciseDBItem)
 
     @Query("SELECT * FROM Exercises")
@@ -20,6 +20,9 @@ interface ExerciceDao {
 
     @Query("SELECT * FROM Exercises WHERE id = :id")
     suspend fun getExercises(id: Int): ExerciseDBItem
+
+    @Query("SELECT * FROM Exercises WHERE bodyPart = :bodyPart")
+    suspend fun getExercisesByBodyPart(bodyPart: String): ExerciseDBItem
 
     @Update
     suspend fun updateExerciesDetails(employee: ExerciseDBItem)

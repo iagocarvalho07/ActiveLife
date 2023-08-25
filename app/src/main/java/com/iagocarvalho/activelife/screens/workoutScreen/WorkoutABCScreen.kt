@@ -231,9 +231,7 @@ fun ExerciseFromFBWorkOut(
                             "treinoA",
                             "cargar",
                             exercices.documenteId,
-                            repeticoes.value,
-                            Series.value,
-                            carga.value
+                            carga.value,
                         ).run {
                             Toast.makeText(
                                 context,
@@ -242,25 +240,21 @@ fun ExerciseFromFBWorkOut(
                             ).show()
                         }
                     }
-
                     if (repeticoes.value.isNotEmpty()) {
                         getfunbyViewModel.updateWorkOut(
                             "treinoA",
-                            "cargar",
+                            "repeticoes",
                             exercices.documenteId,
                             repeticoes.value,
-                            Series.value,
-                            carga.value
+
                         )
                     }
                     if (Series.value.isNotEmpty()) {
                         getfunbyViewModel.updateWorkOut(
                             "treinoA",
-                            "cargar",
+                            "series",
                             exercices.documenteId,
-                            repeticoes.value,
                             Series.value,
-                            carga.value
                         )
                     }
                 }

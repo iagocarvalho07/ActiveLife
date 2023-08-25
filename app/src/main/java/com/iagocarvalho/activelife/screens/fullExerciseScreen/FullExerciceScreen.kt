@@ -74,8 +74,12 @@ fun FullExerciceScreen(
     viewModel: FullExerciceScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
 
     ) {
+    val bodyPart = remember {
+        mutableStateOf("").value
+    }
 
     val viewModels = viewModel.repositorys.getExercicesFromRoom().collectAsState(listOf()).value
+
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
@@ -116,12 +120,14 @@ fun FullExerciceScreen(
                     colors = CardDefaults.cardColors(Color(0xFFE47C0E))
                 ) {
                     LazyRow {
+
                         item() {
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(4.dp)
                             ) {
+
                                 Button(
                                     onClick = { /*TODO*/ },
                                     modifier = Modifier.padding(end = 8.dp)
@@ -234,10 +240,6 @@ fun FullExerciceScreen(
                 } else {
                     LazyColumn {
                         items(viewModels) { allexercises ->
-                            Log.d(
-                                "TestApi",
-                                "FullExerciceScreen: chamando api  ${allexercises.name}"
-                            )
                             val expande = remember { mutableStateOf(false) }
 
                             val treinoA = remember {
@@ -438,20 +440,3 @@ fun FullExerciceScreen(
         }
     }
 }
-
-
-//firebaseTreinos.collection("users").document(Firebase.auth.currentUser!!.uid)
-//.set(allexercises)
-//.addOnSuccessListener { documeteReference ->
-//    Log.d(
-//        "AddWorkout",
-//        "AddWorkout: ${documeteReference}"
-//    )
-//}
-//.addOnFailureListener { e ->
-//    Log.w(
-//        "AddWorkout",
-//        "Error adding document",
-//        e
-//    )
-//}

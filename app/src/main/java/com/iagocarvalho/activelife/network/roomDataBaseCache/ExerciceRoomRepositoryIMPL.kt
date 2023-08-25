@@ -12,6 +12,9 @@ class ExerciceRoomRepositoryIMPL(private val ExerciceDao: ExerciceDao) : RoomRep
     override suspend fun addExercicesToRoom(Exercises: ExerciseDBItem) =
         ExerciceDao.addExercices(Exercises)
 
+    override suspend fun getExercisesByBodyPart(bodyPart: String) =
+        ExerciceDao.getExercisesByBodyPart(bodyPart)
+
     override suspend fun updateExercicesInRoom(Exercises: ExerciseDBItem) =
         ExerciceDao.updateExerciesDetails(Exercises)
 

@@ -96,14 +96,12 @@ class ExercicioDbRepository {
 
     fun updateWorkoutFromFb(
         treino: String,
-        canpo: String,
+        qualTrienoABCD: String,
         documenteId: String,
-        repeticoes: String,
-        series: String,
-        cargar: String
+        tipoCargaOuRepsOuSeries: String
     ) {
         db.collection(treino).document(documenteId)
-            .update(canpo, cargar)
+            .update(qualTrienoABCD, tipoCargaOuRepsOuSeries)
             .addOnCompleteListener { task ->
                 Log.d(
                     "getWorkOutFromFB",

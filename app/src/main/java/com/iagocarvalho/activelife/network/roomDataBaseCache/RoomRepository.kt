@@ -12,6 +12,8 @@ interface RoomRepository {
 
     suspend  fun  addExercicesToRoom (Exercises: ExerciseDBItem )
 
+    suspend fun getExercisesByBodyPart(bodyPart: String): ExerciseDBItem
+
     suspend  fun  updateExercicesInRoom (Exercises: ExerciseDBItem )
 
     suspend  fun  deleteExercicesToromRoom (Exercises : ExerciseDBItem )
