@@ -115,4 +115,11 @@ class ExercicioDbRepository {
                 )
             }
     }
+
+    fun deleteWorkOutFromFb(colettion: String, documenteId: String){
+        db.collection(colettion).document(documenteId)
+            .delete()
+            .addOnSuccessListener { Log.d("DelelteWorkout", "DocumentSnapshot successfully deleted!") }
+            .addOnFailureListener { Log.d("DelelteWorkout", "DocumentSnapshot insuccessfully deleted!")  }
+    }
 }

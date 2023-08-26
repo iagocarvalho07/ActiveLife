@@ -1,5 +1,6 @@
 package com.iagocarvalho.activelife.screens.fullExerciseScreen
 
+import android.graphics.drawable.Icon
 import android.os.Build.VERSION.SDK_INT
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -20,6 +21,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.ModalDrawer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -27,11 +30,13 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -41,20 +46,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Popup
 import androidx.navigation.NavController
 import coil.ImageLoader
 import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
+import coil.compose.SubcomposeAsyncImage
+import coil.compose.SubcomposeAsyncImageContent
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import coil.size.Size
+import com.iagocarvalho.activelife.R
 import com.iagocarvalho.activelife.constants.SearchBar
 import com.iagocarvalho.activelife.screens.homeScreen.BottomNavigationScreen
 import com.iagocarvalho.activelife.screens.homeScreen.TopAppBarScren
@@ -104,16 +116,6 @@ fun FullExerciceScreen(
                     colors = CardDefaults.cardColors(Color(0xFFE47C0E))
                 ) {
                     val listBodyPart = listOf(
-//                        "back",
-//                        "cardio",
-//                        "chest",
-//                        "lower arms",
-//                        "lower legs",
-//                        "neck",
-//                        "shoulders",
-//                        "upper arms",
-//                        "upper legs",
-//                        "waist",
                         "abductors",
                         "abs",
                         "adductors",
@@ -251,6 +253,7 @@ fun CarViewExercisesByRoom(
             verticalArrangement = Arrangement.Center
         ) {
             Row(modifier = Modifier) {
+                val openDialog = remember { mutableStateOf(false) }
                 val imageLoader =
                     ImageLoader.Builder(context = LocalContext.current)
                         .components {
@@ -265,16 +268,98 @@ fun CarViewExercisesByRoom(
                         .width(80.dp)
                         .height(80.dp)
                 ) {
-                    AsyncImage(
+                    SubcomposeAsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
                             .data(data = gifUrl)
                             .apply(block = {
-                                size(Size.ORIGINAL)
+                                size((Size.ORIGINAL))
                             })
                             .crossfade(true)
                             .build(), imageLoader = imageLoader,
-                        contentDescription = ""
-                    )
+                        contentDescription = "",
+                        modifier = Modifier.clickable { openDialog.value = true }
+                    ) {
+                        val state = painter.state
+                        if (state is AsyncImagePainter.State.Loading || state is AsyncImagePainter.State.Error) {
+                            Column(
+                                modifier = Modifier.fillMaxSize(),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                CircularProgressIndicator()
+                            }
+                        } else {
+                            SubcomposeAsyncImageContent()
+                        }
+                    }
+
+
+                    if (openDialog.value) {
+                        AlertDialog(
+                            onDismissRequest = {
+                                // Dismiss the dialog when the user clicks outside the dialog or on the back
+                                // button. If you want to disable that functionality, simply use an empty
+                                // onCloseRequest.
+                                openDialog.value = false
+                            },
+                            title = {
+                                Text(text = name)
+                            },
+                            text = {
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(180.dp),
+                                    verticalArrangement = Arrangement.Center,
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+
+                                    val imageLoaders =
+                                        ImageLoader.Builder(context = LocalContext.current)
+                                            .components {
+                                                if (SDK_INT >= 28) {
+                                                    add(ImageDecoderDecoder.Factory())
+                                                } else {
+                                                    add(GifDecoder.Factory())
+                                                }
+                                            }.build()
+                                    SubcomposeAsyncImage(
+                                        model = ImageRequest.Builder(LocalContext.current)
+                                            .data(data = gifUrl)
+                                            .apply(block = {
+                                                size((Size.ORIGINAL))
+                                            })
+                                            .crossfade(true)
+                                            .build(), imageLoader = imageLoaders,
+                                        contentDescription = "",
+                                        modifier = Modifier.clickable { openDialog.value = true }
+                                    ) {
+                                        val state = painter.state
+                                        if (state is AsyncImagePainter.State.Loading || state is AsyncImagePainter.State.Error) {
+                                            Column(
+                                                modifier = Modifier.fillMaxSize(),
+                                                verticalArrangement = Arrangement.Center,
+                                                horizontalAlignment = Alignment.CenterHorizontally
+                                            ) {
+                                                CircularProgressIndicator()
+                                            }
+                                        } else {
+                                            SubcomposeAsyncImageContent()
+                                        }
+                                    }
+                                }
+                            },
+                            confirmButton = {
+                                TextButton(
+                                    onClick = {
+                                        openDialog.value = false
+                                    }
+                                ) {
+                                    Text("Confirm")
+                                }
+                            },
+                        )
+                    }
                 }
                 Column(
                     modifier = Modifier.padding(start = 16.dp),
@@ -357,6 +442,7 @@ fun CarViewExercisesByRoom(
                             onClick = { treinoD.value = !treinoD.value })
                         Text(text = "D")
                     }
+
                     Button(onClick = {
                         if (treinoA.value) {
                             scope.launch(Dispatchers.IO) {
@@ -418,5 +504,4 @@ fun CarViewExercisesByRoom(
             }
         }
     }
-
 }

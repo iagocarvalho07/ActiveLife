@@ -25,4 +25,8 @@ class WorkoutABCScreenViewModel : ViewModel() {
         return dataStore.updateWorkoutFromFb(treino, qualTrienoABCD, documenteId, tipoCargaOuRepsOuSeries)
 
     }
+
+    fun deleteWorkOutFromFb(colettion: String, documenteId: String){
+        return dataStore.deleteWorkOutFromFb(colettion, documenteId)
+    }
 }
