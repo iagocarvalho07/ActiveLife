@@ -71,10 +71,10 @@ class ExercicioDbRepository {
 
     }
 
-    fun getWorkOutFromFB(): Flow<MutableList<ModelExerciceFB>> {
+    fun getWorkOutFromFB(trienoABCD: String): Flow<MutableList<ModelExerciceFB>> {
         val modelListExercice: MutableList<ModelExerciceFB> = mutableListOf()
 
-        db.collection("treinoA").whereEqualTo("user_Id", currentUser).get()
+        db.collection(trienoABCD).whereEqualTo("user_Id", currentUser).get()
             .addOnCompleteListener { quer ->
                 if (quer.isSuccessful) {
                     for (documente in quer.result) {

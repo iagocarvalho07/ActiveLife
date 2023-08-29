@@ -12,8 +12,8 @@ class WorkoutABCScreenViewModel : ViewModel() {
         getExerciceFb()
     }
 
-    fun getExerciceFb(): Flow<MutableList<ModelExerciceFB>> {
-        return dataStore.getWorkOutFromFB()
+    fun getExerciceFb(treinoABCD: String = "treinoA"): Flow<MutableList<ModelExerciceFB>> {
+        return dataStore.getWorkOutFromFB(treinoABCD)
     }
 
     fun updateWorkOut(

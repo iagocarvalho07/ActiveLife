@@ -1,6 +1,5 @@
 package com.iagocarvalho.activelife.screens.workoutScreen
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -16,21 +15,25 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,7 +50,6 @@ import com.iagocarvalho.activelife.constants.GenericTextFild
 import com.iagocarvalho.activelife.constants.SubmitButton
 import com.iagocarvalho.activelife.model.modelUsers.ModelExerciceFB
 import com.iagocarvalho.activelife.screens.homeScreen.BottomNavigationScreen
-import com.iagocarvalho.activelife.screens.homeScreen.CardTreiner
 import com.iagocarvalho.activelife.screens.homeScreen.TopAppBarScren
 
 @Preview
@@ -57,9 +59,6 @@ fun WorkoutABCScreen(
     navController: NavController = NavController(LocalContext.current),
     viewModel: WorkoutABCScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
-
-    val getExercisesFromFB = viewModel.getExerciceFb().collectAsState(mutableListOf())
-
     Scaffold(topBar = {
         TopAppBarScren(
             navController = navController,
@@ -75,12 +74,89 @@ fun WorkoutABCScreen(
                 .fillMaxSize()
                 .background(Color.Black)
         ) {
-            Column() {
-                CardTreiner(navController = navController, isHomeScreen = false)
-                Divider(thickness = 2.dp)
-                LazyColumn {
-                    items(getExercisesFromFB.value) { exerciceFLazy ->
-                        ExerciseFromFBWorkOut(exercices = exerciceFLazy)
+            var state by remember { mutableStateOf(0) }
+            val titles = listOf("Treino A", "Treino B", "Treino C", "Treino D")
+            Column {
+                TabRow(selectedTabIndex = state, tabs = {
+                    titles.forEachIndexed { index, title ->
+                        Tab(
+                            text = { Text(title) },
+                            selected = state == index,
+                            onClick = {
+                                state = index
+                            }
+                        )
+                    }
+                })
+                when (state) {
+                    0 -> {
+                        val getExercisesFromFBTreinaA by
+                        viewModel.getExerciceFb("treinoA").collectAsState(mutableListOf())
+                        val isCollectionEmpty = getExercisesFromFBTreinaA.isEmpty()
+                        if (isCollectionEmpty) {
+                            Icon(imageVector = Icons.Default.Star, contentDescription = "")
+                        } else {
+                            Box {
+                                LazyColumn {
+                                    items(getExercisesFromFBTreinaA) { exerciceFLazy ->
+                                        ExerciseFromFBWorkOut(exercices = exerciceFLazy)
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    1 -> {
+                        val getExercisesFromFBTreinaB by
+                        viewModel.getExerciceFb("treinoB").collectAsState(mutableListOf())
+
+                        val isCollectionEmpty = getExercisesFromFBTreinaB.isEmpty()
+                        if (isCollectionEmpty) {
+                            Icon(imageVector = Icons.Default.Star, contentDescription = "")
+                        } else {
+                            Box {
+                                LazyColumn {
+                                    items(getExercisesFromFBTreinaB) { exerciceFLazy ->
+                                        ExerciseFromFBWorkOut(exercices = exerciceFLazy)
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    2 -> {
+
+                        val getExercisesFromFBTreinaC by
+                        viewModel.getExerciceFb("treinoC").collectAsState(mutableListOf())
+                        val isCollectionEmpty = getExercisesFromFBTreinaC.isEmpty()
+                        if (isCollectionEmpty) {
+                            Icon(imageVector = Icons.Default.Star, contentDescription = "")
+                        } else {
+                            Box {
+                                LazyColumn {
+                                    items(getExercisesFromFBTreinaC) { exerciceFLazy ->
+                                        ExerciseFromFBWorkOut(exercices = exerciceFLazy)
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    3 -> {
+                        val getExercisesFromFBTreinaD by
+                        viewModel.getExerciceFb("treinoD").collectAsState(mutableListOf())
+                        val isCollectionEmpty = getExercisesFromFBTreinaD.isEmpty()
+                        if (isCollectionEmpty) {
+                            Icon(imageVector = Icons.Default.Star, contentDescription = "")
+                        } else {
+                            Box {
+                                LazyColumn {
+                                    items(getExercisesFromFBTreinaD) { exerciceFLazy ->
+                                        ExerciseFromFBWorkOut(exercices = exerciceFLazy)
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -103,7 +179,7 @@ fun ExerciseFromFBWorkOut(
     val repeticoes = remember {
         mutableStateOf("")
     }
-    val Series = remember {
+    val series = remember {
         mutableStateOf("")
     }
     val carga = remember {
@@ -154,7 +230,7 @@ fun ExerciseFromFBWorkOut(
                 verticalArrangement = Arrangement.SpaceAround,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Row() {
+                Row {
                     Text(text = "Carga : Kg")
                 }
 
@@ -179,7 +255,7 @@ fun ExerciseFromFBWorkOut(
 
         }
         AnimatedVisibility(visible = expanded.value) {
-            Column() {
+            Column {
                 Text(
                     modifier = Modifier.padding(8.dp),
                     text = "Diga: Atualize sua carga, repetiçoes e series, acompanhe seu progreço constantemente "
@@ -191,7 +267,7 @@ fun ExerciseFromFBWorkOut(
                     labelId = "Repetiçoes"
                 )
                 GenericTextFild(
-                    TextFild = Series,
+                    TextFild = series,
                     keyboardType = KeyboardType.Number,
                     labelId = "Series"
                 )
@@ -222,15 +298,14 @@ fun ExerciseFromFBWorkOut(
                             "repeticoes",
                             exercices.documenteId,
                             repeticoes.value,
-
-                            )
+                        )
                     }
-                    if (Series.value.isNotEmpty()) {
+                    if (series.value.isNotEmpty()) {
                         getfunbyViewModel.updateWorkOut(
                             "treinoA",
                             "series",
                             exercices.documenteId,
-                            Series.value,
+                            series.value,
                         )
                     }
                 }
