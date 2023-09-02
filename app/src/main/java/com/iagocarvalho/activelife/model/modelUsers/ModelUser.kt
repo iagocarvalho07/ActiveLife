@@ -8,6 +8,7 @@ data class ModelUser(
     val idade: String= "",
     val email: String= "",
     val avatarURL: String= "",
+    val documenteId: String = ""
 
 
 ){
@@ -20,6 +21,7 @@ data class ModelUser(
             "idade" to this.idade,
             "email" to this.email,
             "avatar_Url" to this.avatarURL,
+            "documenteId" to this.documenteId,
         )
     }
 }

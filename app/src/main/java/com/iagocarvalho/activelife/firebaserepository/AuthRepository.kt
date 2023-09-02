@@ -141,13 +141,17 @@ class AuthRepository {
         ).toMap()
         FirebaseFirestore.getInstance().collection("users")
             .add(user)
-            .addOnSuccessListener { Log.d("TAG", "CreatUser: Document criado porra") }
-            .addOnFailureListener { e -> Log.d("TAG", "CreatUser: documento n foi criado $e") }
+            .addOnCompleteListener { task ->
+                val docId = task.result.id
+                Log.d("updateUser", "CreatUser: Document ${docId}")
+                FirebaseFirestore.getInstance().collection("users").document(docId)
+                    .update("documenteId", docId)
+                    .addOnCompleteListener { tasks -> Log.d("updateUser", "CreatUser: ${tasks.result}") }
+                    .addOnFailureListener { tasks -> Log.d("updateUser", "CreatUser: ${tasks.message}") }
 
+            }
+            .addOnFailureListener { e -> Log.d("updateUser", "CreatUser: documento n foi criado $e") }
     }
-
-
-
 }
 
 

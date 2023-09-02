@@ -1,5 +1,7 @@
 package com.iagocarvalho.activelife.screens.profileScreen
 
+import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,6 +22,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,12 +31,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import com.iagocarvalho.activelife.constants.GenericTextFild
+import com.iagocarvalho.activelife.constants.SubmitButton
 import com.iagocarvalho.activelife.screens.homeScreen.BottomNavigationScreen
 import com.iagocarvalho.activelife.screens.homeScreen.TopAppBarScren
 
@@ -59,7 +67,7 @@ fun ProfileScreen(navController: NavController = NavController(LocalContext.curr
                     .background(Color.Black),
                 horizontalAlignment = Alignment.CenterHorizontally,
 
-            ) {
+                ) {
                 ShowProfile()
             }
         }
@@ -72,16 +80,19 @@ fun ShowProfile(
     navController: NavController = NavController(LocalContext.current),
     viewModel: ProfileScreenViewModel = viewModel()
 ) {
+    val expande = remember { mutableStateOf(false) }
     val getDataUserInfo = viewModel.state.value
     val styleNumbers = TextStyle(
         fontSize = 20.sp,
         fontFamily = FontFamily.Serif,
         fontWeight = FontWeight(700),
-        color = Color(0xFFE47C0E),)
+        color = Color(0xFFE47C0E),
+    )
     val styleString = TextStyle(
         fontSize = 15.sp,
         fontFamily = FontFamily.Serif,
-        fontWeight = FontWeight(700),)
+        fontWeight = FontWeight(700),
+    )
 
     Column(
         modifier = Modifier
@@ -108,26 +119,33 @@ fun ShowProfile(
                 .clickable { },
             style = styleNumbers
         )
-        Card(modifier = Modifier.padding(16.dp)) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                Arrangement.SpaceAround,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(modifier = Modifier.clickable {  }) {
-                    Text(text = "${getDataUserInfo.peso}kg", style = styleNumbers)
-                    Text(text = "Peso", style = styleString)
+        Column {
+            Card(modifier = Modifier
+                .padding(16.dp)
+                .clickable { expande.value != expande.value }) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column {
+                        Text(text = "${getDataUserInfo.peso}kg", style = styleNumbers)
+                        Text(text = "Peso", style = styleString)
+                    }
+                    Column {
+                        Text(text = "${getDataUserInfo.altura}cm", style = styleNumbers)
+                        Text(text = "altura", style = styleString)
+                    }
+                    Column {
+                        Text(text = getDataUserInfo.idade, style = styleNumbers)
+                        Text(text = "idade", style = styleString)
+                    }
                 }
-                Column(modifier = Modifier.clickable {  }) {
-                    Text(text = "${getDataUserInfo.altura}cm", style = styleNumbers)
-                    Text(text = "altura", style = styleString)
-                }
-                Column(modifier = Modifier.clickable {  }) {
-                    Text(text = getDataUserInfo.idade, style = styleNumbers)
-                    Text(text = "idade", style = styleString)
-                }
+            }
+            Card {
+
             }
         }
     }

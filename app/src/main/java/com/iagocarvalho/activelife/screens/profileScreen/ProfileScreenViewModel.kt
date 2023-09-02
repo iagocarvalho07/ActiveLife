@@ -19,4 +19,12 @@ class ProfileScreenViewModel: ViewModel() {
     private fun getData() {
         viewModelScope.launch { state.value = dataStore.getDataUsersFromFireStore() }
     }
+
+    fun UpdateUserFromFB(
+        documenteId: String,
+        campo: String,
+        valor: String,
+    ){
+        viewModelScope.launch { dataStore.updateUserFromFb(documenteId, campo, valor) }
+    }
 }

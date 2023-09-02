@@ -25,5 +25,17 @@ class DataSorce {
         }
         return modelUser
     }
+
+    fun updateUserFromFb(
+        documenteId: String,
+        campo: String,
+        valor: String,
+
+    ){
+        db.collection("users").document(documenteId)
+            .update(campo, valor)
+            .addOnCompleteListener{task -> Log.d("UpdateUser", "updateUserFromFb: ${task.result}")}
+            .addOnFailureListener { task -> Log.d("UpdateUser", "updateUserFromFb: ${task.message}") }
+    }
 }
 

@@ -2,11 +2,9 @@ package com.iagocarvalho.activelife.screens.workoutScreen
 
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.slideIn
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOut
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,17 +18,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -46,9 +40,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -58,13 +50,10 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.iagocarvalho.activelife.R
 import com.iagocarvalho.activelife.constants.GenericTextFild
 import com.iagocarvalho.activelife.constants.SubmitButton
 import com.iagocarvalho.activelife.model.modelUsers.ModelExerciceFB
-import com.iagocarvalho.activelife.navigation.NagitaionScreens
 import com.iagocarvalho.activelife.screens.homeScreen.BottomNavigationScreen
-import com.iagocarvalho.activelife.screens.homeScreen.CardTreiner
 import com.iagocarvalho.activelife.screens.homeScreen.TopAppBarScren
 
 @Preview
@@ -114,7 +103,10 @@ fun WorkoutABCScreen(
                             Box {
                                 LazyColumn {
                                     items(getExercisesFromFBTreinaA) { exerciceFLazy ->
-                                        ExerciseFromFBWorkOut(exercices = exerciceFLazy, treinoUpdateFB = "treinoA")
+                                        ExerciseFromFBWorkOut(
+                                            exercices = exerciceFLazy,
+                                            treinoUpdateFB = "treinoA"
+                                        )
                                     }
                                 }
                             }
@@ -132,7 +124,10 @@ fun WorkoutABCScreen(
                             Box {
                                 LazyColumn {
                                     items(getExercisesFromFBTreinaB) { exerciceFLazy ->
-                                        ExerciseFromFBWorkOut(exercices = exerciceFLazy, treinoUpdateFB = "treinoB")
+                                        ExerciseFromFBWorkOut(
+                                            exercices = exerciceFLazy,
+                                            treinoUpdateFB = "treinoB"
+                                        )
                                     }
                                 }
                             }
@@ -150,7 +145,10 @@ fun WorkoutABCScreen(
                             Box {
                                 LazyColumn {
                                     items(getExercisesFromFBTreinaC) { exerciceFLazy ->
-                                        ExerciseFromFBWorkOut(exercices = exerciceFLazy, treinoUpdateFB = "treinoC")
+                                        ExerciseFromFBWorkOut(
+                                            exercices = exerciceFLazy,
+                                            treinoUpdateFB = "treinoC"
+                                        )
                                     }
                                 }
                             }
@@ -167,7 +165,10 @@ fun WorkoutABCScreen(
                             Box {
                                 LazyColumn {
                                     items(getExercisesFromFBTreinaD) { exerciceFLazy ->
-                                        ExerciseFromFBWorkOut(exercices = exerciceFLazy, treinoUpdateFB = "treinoD")
+                                        ExerciseFromFBWorkOut(
+                                            exercices = exerciceFLazy,
+                                            treinoUpdateFB = "treinoD"
+                                        )
                                     }
                                 }
                             }
@@ -178,6 +179,7 @@ fun WorkoutABCScreen(
         }
     }
 }
+
 @Composable
 fun ExerciseFromFBWorkOut(
     exercices: ModelExerciceFB,
@@ -271,13 +273,12 @@ fun ExerciseFromFBWorkOut(
         }
         AnimatedVisibility(
             visible = expanded.value,
-            enter = slideIn() { fullSize ->
-                IntOffset(fullSize.width / 4, 100)
-            },
-            exit = slideOut() {
+            enter = slideInVertically { fullHeight -> fullHeight },
+            exit = slideOut(animationSpec = tween(100)) {
                 IntOffset(-180, 50)
             },
-        ) {
+
+            ) {
             AlertDialog(
                 onDismissRequest = {
                     expanded.value = false
