@@ -254,7 +254,7 @@ fun CarViewExercisesByRoom(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Center
         ) {
-            Row(modifier = Modifier) {
+            Row(modifier = Modifier.fillMaxWidth()) {
                 val openDialog = remember { mutableStateOf(false) }
                 val imageLoader =
                     ImageLoader.Builder(context = LocalContext.current)
@@ -364,7 +364,7 @@ fun CarViewExercisesByRoom(
                     }
                 }
                 Column(
-                    modifier = Modifier.padding(start = 16.dp),
+                    modifier = Modifier.padding(start = 16.dp).weight(1f),
                     horizontalAlignment = Alignment.Start,
                     verticalArrangement = Arrangement.Center
                 ) {
@@ -372,30 +372,11 @@ fun CarViewExercisesByRoom(
                     Text(text = bodyPart, style = styleString)
                     Text(text = equipment, style = styleString)
                 }
-            }
-            Spacer(modifier = Modifier.height(4.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Card(elevation = CardDefaults.cardElevation(defaultElevation = 20.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.LightGray),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { expande.value = !expande.value }) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ) {
-                        Text(text = "Adicionar ao Treino   ->")
-                        Icon(imageVector = if (expande.value) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp,
-                            contentDescription = "",
-                            modifier = Modifier.clickable {
-                                expande.value = !expande.value
-                            })
-                    }
-                }
+                Icon(imageVector = if (expande.value) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp,
+                    contentDescription = "",
+                    modifier = Modifier.clickable {
+                        expande.value = !expande.value
+                    })
             }
             AnimatedVisibility(
                 visible = expande.value,
@@ -406,43 +387,53 @@ fun CarViewExercisesByRoom(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        RadioButton(
-                            selected = treinoA.value,
-                            onClick = { treinoA.value = !treinoA.value })
-                        Text(text = "A")
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(text = "Adicionar ao Treino")
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
 
-                    }
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        RadioButton(
-                            selected = treinoB.value,
-                            onClick = { treinoB.value = !treinoB.value })
-                        Text(text = "B")
-                    }
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        RadioButton(
-                            selected = treinoC.value,
-                            onClick = { treinoC.value = !treinoC.value })
-                        Text(text = "C")
-                    }
 
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        RadioButton(
-                            selected = treinoD.value,
-                            onClick = { treinoD.value = !treinoD.value })
-                        Text(text = "D")
+                            Column(
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                RadioButton(
+                                    selected = treinoA.value,
+                                    onClick = { treinoA.value = !treinoA.value })
+                                Text(text = "A")
+
+                            }
+                            Column(
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                RadioButton(
+                                    selected = treinoB.value,
+                                    onClick = { treinoB.value = !treinoB.value })
+                                Text(text = "B")
+                            }
+                            Column(
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                RadioButton(
+                                    selected = treinoC.value,
+                                    onClick = { treinoC.value = !treinoC.value })
+                                Text(text = "C")
+                            }
+
+                            Column(
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                RadioButton(
+                                    selected = treinoD.value,
+                                    onClick = { treinoD.value = !treinoD.value })
+                                Text(text = "D")
+                            }
+                        }
                     }
 
                     Button(onClick = {

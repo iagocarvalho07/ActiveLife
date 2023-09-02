@@ -3,6 +3,10 @@ package com.iagocarvalho.activelife.screens.profileScreen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.ScrollableState
+import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,12 +15,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -115,9 +126,10 @@ fun ShowProfile(
             style = styleNumbers
         )
         Column {
-            Card(modifier = Modifier
-                .padding(16.dp)
-                .clickable { expande.value != expande.value }) {
+            Card(
+                modifier = Modifier
+                    .padding(16.dp)
+            ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -139,31 +151,41 @@ fun ShowProfile(
                     }
                 }
             }
-            val expandTextAuxilio = remember {
-                mutableStateOf(false)
-            }
-            val maxLine = remember {
-                mutableStateOf(1)
-            }
-            if (expande.value) {
-                maxLine.value = 10
-            }
-            Card {
-                Column {
-                    TextButton(onClick = { /*TODO*/ }) {
-                        Text(text = "Apoie é Gratis ^^")
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        ElevatedButton(onClick = { /*TODO*/ }) {
+                            Text(text = "Apoie é Gratis ^^")
 
+                        }
+                        Icon(imageVector = if (expande.value) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp,
+                            contentDescription = "",
+                            modifier = Modifier.clickable {
+                                expande.value = !expande.value
+                            })
                     }
-                    Text(
-                        text = "Ajude a tornar Active Life uma realidade!\n" +
-                                "\n" +
-                                "Active Life é um aplicativo que ajudará pessoas a montar seus treinos e contrubuir para uma vida ativa." +
-                                " É um projeto inovador que tem o potencial.\n" +
-                                "\n" +
-                                "Sua contribuição será fundamental para o sucesso de Active Life. Com seu apoio, poderemos Desenvolver e Aprimorar o Aplicativo e continuar o disponibilizando de forma gratuita.\n" +
-                                "\n" +
-                                "Ajude a fazer a diferença!"
-                    )
+                    if (expande.value) {
+
+                        Text(
+                            text = "Ajude a tornar Active Life uma realidade!\n" +
+                                    "\n" +
+                                    "Active Life é um aplicativo que ajudará pessoas a montar seus treinos e contrubuir para uma vida ativa." +
+                                    " É um projeto inovador que tem o potencial.\n" +
+                                    "\n" +
+                                    "Sua contribuição será fundamental para o sucesso de Active Life. Com seu apoio, poderemos Desenvolver e Aprimorar o Aplicativo e continuar o disponibilizando de forma gratuita.\n" +
+                                    "\n" +
+                                    "Ajude a fazer a diferença!",
+                            modifier = Modifier.verticalScroll(rememberScrollState())
+                        )
+                    }
                 }
             }
         }

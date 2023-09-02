@@ -1,20 +1,16 @@
 package com.iagocarvalho.activelife
 
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
@@ -25,8 +21,11 @@ import com.iagocarvalho.activelife.ui.theme.ActiveLifeTheme
 import java.util.Collections
 
 class MainActivity : ComponentActivity() {
+    private var mInterstitialAd: InterstitialAd? = null
+    private val adId  = "ca-app-pub-3940256099942544/1033173712"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             ActiveLifeTheme {
                 // A surface container using the 'background' color from the theme
@@ -47,5 +46,47 @@ class MainActivity : ComponentActivity() {
 
     }
 
+    fun loadinInterestitailAd(adStatus: (Boolean) -> Unit){
+        val adRequest = AdRequest.Builder().build()
+        InterstitialAd.load(this, adId, adRequest, object : InterstitialAdLoadCallback(){
+            override fun onAdFailedToLoad(error: LoadAdError) {
+                super.onAdFailedToLoad(error)
+                mInterstitialAd = null
+                Log.d("Ad_Stut", "onAdFailedToLoad: $error")
+            }
+
+            override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                super.onAdLoaded(interstitialAd)
+                mInterstitialAd = interstitialAd
+                Log.i("Ad_Stut", "onAdFload: ")
+            }
+        })
+
+    }
+
+    private fun showInterticialAd(){
+        mInterstitialAd?.let {ad ->
+            ad.fullScreenContentCallback = object :FullScreenContentCallback(){
+                override fun onAdDismissedFullScreenContent() {
+                    super.onAdDismissedFullScreenContent()
+                    Log.i("Ad_Stut", "onAdDismissedFullScreenContent: ")
+                    mInterstitialAd = null
+                }
+
+                override fun onAdImpression() {
+                    super.onAdImpression()
+                    Log.i("Ad_Stut", "onAdImpression: ")
+                }
+
+                override fun onAdClicked() {
+                    super.onAdClicked()
+                    Log.i("Ad_Stut", "onAdClicked: ")
+                }
+            }
+            ad.show(this)
+        }?: kotlin.run {
+            Toast.makeText(this, "ad is null", Toast.LENGTH_SHORT).show()
+        }
+    }
 }
 
