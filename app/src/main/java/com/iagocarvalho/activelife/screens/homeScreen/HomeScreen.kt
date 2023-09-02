@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.iagocarvalho.activelife.R
+import com.iagocarvalho.activelife.constants.BannerAdView
 import com.iagocarvalho.activelife.navigation.NagitaionScreens
 
 @Preview
@@ -89,6 +90,7 @@ fun ScaffoldScreen(
                 verticalArrangement = Arrangement.Top
 
             ) {
+                BannerAdView()
                 Card(
                     modifier = Modifier
                         .padding(16.dp)

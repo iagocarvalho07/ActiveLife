@@ -67,6 +67,7 @@ import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import coil.size.Size
 import com.iagocarvalho.activelife.R
+import com.iagocarvalho.activelife.constants.BannerAdView
 import com.iagocarvalho.activelife.constants.SearchBar
 import com.iagocarvalho.activelife.screens.homeScreen.BottomNavigationScreen
 import com.iagocarvalho.activelife.screens.homeScreen.TopAppBarScren
@@ -109,6 +110,7 @@ fun FullExerciceScreen(
                 verticalArrangement = Arrangement.Top
 
             ) {
+                BannerAdView()
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()

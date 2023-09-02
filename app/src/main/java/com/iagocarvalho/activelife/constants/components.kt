@@ -1,5 +1,8 @@
 package com.iagocarvalho.activelife.constants
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,6 +16,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -31,6 +35,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
@@ -41,6 +47,11 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import coil.compose.rememberAsyncImagePainter
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 import com.iagocarvalho.activelife.R
 
 @Composable
@@ -239,7 +250,7 @@ fun UseFormeCreateUser(
         GenericTextFild(
             TextFild = altura,
             labelId = "Altura em Cm",
-           keyboardType = KeyboardType.Number
+            keyboardType = KeyboardType.Number
         )
         GenericTextFild(TextFild = idade, labelId = "Idade", keyboardType = KeyboardType.Number)
         EmailImput(emailState = email)
@@ -317,5 +328,31 @@ fun SearchBar(text: MutableState<String>) {
             focusManager.clearFocus()
 
         })
+    )
+}
+
+@Composable
+fun BannerAdView() {
+
+    val deviceCurrentWidth = LocalConfiguration.current.screenWidthDp
+    val applicationContext = LocalContext.current.applicationContext
+    AndroidView(
+        modifier = Modifier
+            .fillMaxWidth(),
+        factory = { context ->
+            AdView(context).apply {
+                setAdSize(
+                    AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
+                        applicationContext,
+                        deviceCurrentWidth
+                    )
+                )
+                // Adicione seu adUnitID, isto é para teste.
+                //"ca-app-pub-3940256099942544/6300978111"
+                //ca-app-pub-1389782159432301/6404410297
+                adUnitId = "ca-app-pub-1389782159432301/6404410297"
+                loadAd(AdRequest.Builder().build())
+            }
+        }
     )
 }

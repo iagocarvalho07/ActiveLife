@@ -1,7 +1,5 @@
 package com.iagocarvalho.activelife.screens.profileScreen
 
-import android.widget.Toast
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -21,6 +19,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,16 +30,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
-import com.iagocarvalho.activelife.constants.GenericTextFild
-import com.iagocarvalho.activelife.constants.SubmitButton
 import com.iagocarvalho.activelife.screens.homeScreen.BottomNavigationScreen
 import com.iagocarvalho.activelife.screens.homeScreen.TopAppBarScren
 
@@ -81,6 +75,7 @@ fun ShowProfile(
     viewModel: ProfileScreenViewModel = viewModel()
 ) {
     val expande = remember { mutableStateOf(false) }
+    val admob = remember { mutableStateOf(false) }
     val getDataUserInfo = viewModel.state.value
     val styleNumbers = TextStyle(
         fontSize = 20.sp,
@@ -144,8 +139,32 @@ fun ShowProfile(
                     }
                 }
             }
+            val expandTextAuxilio = remember {
+                mutableStateOf(false)
+            }
+            val maxLine = remember {
+                mutableStateOf(1)
+            }
+            if (expande.value) {
+                maxLine.value = 10
+            }
             Card {
+                Column {
+                    TextButton(onClick = { /*TODO*/ }) {
+                        Text(text = "Apoie é Gratis ^^")
 
+                    }
+                    Text(
+                        text = "Ajude a tornar Active Life uma realidade!\n" +
+                                "\n" +
+                                "Active Life é um aplicativo que ajudará pessoas a montar seus treinos e contrubuir para uma vida ativa." +
+                                " É um projeto inovador que tem o potencial.\n" +
+                                "\n" +
+                                "Sua contribuição será fundamental para o sucesso de Active Life. Com seu apoio, poderemos Desenvolver e Aprimorar o Aplicativo e continuar o disponibilizando de forma gratuita.\n" +
+                                "\n" +
+                                "Ajude a fazer a diferença!"
+                    )
+                }
             }
         }
     }
