@@ -1,5 +1,8 @@
 package com.iagocarvalho.activelife.screens.profileScreen
 
+import android.app.Activity
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -46,9 +49,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.iagocarvalho.activelife.screens.homeScreen.BottomNavigationScreen
 import com.iagocarvalho.activelife.screens.homeScreen.TopAppBarScren
 
+private var mInterstitialAd: InterstitialAd? = null
+// ca-app-pub-1389782159432301/8756354855  <- real
+// ca-app-pub-3940256099942544/1033173712 <- test
+private val adId  = "ca-app-pub-1389782159432301/8756354855"
 @Preview(showBackground = true)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -85,8 +97,9 @@ fun ShowProfile(
     navController: NavController = NavController(LocalContext.current),
     viewModel: ProfileScreenViewModel = viewModel()
 ) {
+    val contex = LocalContext.current
     val expande = remember { mutableStateOf(false) }
-    val admob = remember { mutableStateOf(false) }
+    val adStatus = remember { mutableStateOf(false) }
     val getDataUserInfo = viewModel.state.value
     val styleNumbers = TextStyle(
         fontSize = 20.sp,
@@ -99,6 +112,51 @@ fun ShowProfile(
         fontFamily = FontFamily.Serif,
         fontWeight = FontWeight(700),
     )
+
+    fun loadinInterestitailAd(adStatus: (Boolean) -> Unit){
+        val adRequest = AdRequest.Builder().build()
+        InterstitialAd.load(contex, adId, adRequest, object : InterstitialAdLoadCallback(){
+            override fun onAdFailedToLoad(error: LoadAdError) {
+                super.onAdFailedToLoad(error)
+                mInterstitialAd = null
+                Log.d("Ad_Stut", "onAdFailedToLoad: $error")
+                adStatus.invoke(false)
+            }
+
+            override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                super.onAdLoaded(interstitialAd)
+                mInterstitialAd = interstitialAd
+                Log.i("Ad_Stut", "onAdFload: ")
+                adStatus.invoke(true)
+            }
+        })
+
+    }
+
+    fun showInterticialAd(){
+        mInterstitialAd?.let {ad ->
+            ad.fullScreenContentCallback = object : FullScreenContentCallback(){
+                override fun onAdDismissedFullScreenContent() {
+                    super.onAdDismissedFullScreenContent()
+                    Log.i("Ad_Stut", "onAdDismissedFullScreenContent: ")
+                    mInterstitialAd = null
+                }
+
+                override fun onAdImpression() {
+                    super.onAdImpression()
+                    Log.i("Ad_Stut", "onAdImpression: ")
+                }
+
+                override fun onAdClicked() {
+                    super.onAdClicked()
+                    Log.i("Ad_Stut", "onAdClicked: ")
+                }
+            }
+            ad.show(contex as Activity)
+        }?: kotlin.run {
+            Toast.makeText(contex, "ad is null", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -162,7 +220,16 @@ fun ShowProfile(
                             .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        ElevatedButton(onClick = { /*TODO*/ }) {
+                        ElevatedButton(onClick = {
+                            if (adStatus.value){
+                                showInterticialAd()
+                                adStatus.value = false
+                            }else{
+                                loadinInterestitailAd {
+                                    adStatus.value = it
+                                }
+                            }
+                        }) {
                             Text(text = "Apoie é Gratis ^^")
 
                         }
@@ -190,4 +257,7 @@ fun ShowProfile(
             }
         }
     }
+
+
+
 }

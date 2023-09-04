@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.iagocarvalho.activelife.constants.BannerAdView
 import com.iagocarvalho.activelife.constants.GenericTextFild
 import com.iagocarvalho.activelife.constants.SubmitButton
 import com.iagocarvalho.activelife.model.modelUsers.ModelExerciceFB
@@ -81,6 +82,7 @@ fun WorkoutABCScreen(
             var state by remember { mutableStateOf(0) }
             val titles = listOf("Treino A", "Treino B", "Treino C", "Treino D")
             Column {
+                BannerAdView()
                 TabRow(selectedTabIndex = state, tabs = {
                     titles.forEachIndexed { index, title ->
                         Tab(
