@@ -1,12 +1,13 @@
 package com.iagocarvalho.activelife.network
 
+import com.iagocarvalho.activelife.BuildConfig
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
     private const val BASE_URL = "https://exercisedb.p.rapidapi.com/"
-    private const val API_KEY = "0757b63cfemsh162cfcd0c87c0bdp18c47bjsnabd805d0e9b2"
+    private const val API_KEYS = BuildConfig.API_KEY
 
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
@@ -17,7 +18,7 @@ object RetrofitInstance {
 
                 // Adicione a chave privada à solicitação.
                 val newRequest = originalRequest.newBuilder()
-                    .addHeader("X-RapidAPI-Key", API_KEY)
+                    .addHeader("X-RapidAPI-Key", API_KEYS)
                     .addHeader("X-RapidAPI-Host", "exercisedb.p.rapidapi.com")
                     .build()
 
