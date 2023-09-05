@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.iagocarvalho.activelife.screens.AddWorkoutScreen.WorkoutScreen
 import com.iagocarvalho.activelife.screens.ReaderSplashScreen
 import com.iagocarvalho.activelife.screens.fullExerciseScreen.FullExerciceScreen
 import com.iagocarvalho.activelife.screens.homeScreen.HomeScreen
@@ -38,9 +37,6 @@ fun ReaderNagivation() {
         }
         composable(NagitaionScreens.ProfileScreen.name){
             ProfileScreen(navController = navController)
-        }
-        composable(NagitaionScreens.WorkoutScreen.name){
-            WorkoutScreen(navController = navController)
         }
         composable(NagitaionScreens.FullExerciceScreen.name){
             FullExerciceScreen(navController = navController)

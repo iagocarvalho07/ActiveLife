@@ -54,6 +54,7 @@ import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.iagocarvalho.activelife.constants.BannerAdView
 import com.iagocarvalho.activelife.screens.homeScreen.BottomNavigationScreen
 import com.iagocarvalho.activelife.screens.homeScreen.TopAppBarScren
 
@@ -85,6 +86,7 @@ fun ProfileScreen(navController: NavController = NavController(LocalContext.curr
                 horizontalAlignment = Alignment.CenterHorizontally,
 
                 ) {
+                BannerAdView()
                 ShowProfile()
             }
         }

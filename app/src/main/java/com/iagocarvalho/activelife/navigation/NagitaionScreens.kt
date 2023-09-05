@@ -7,7 +7,6 @@ enum class NagitaionScreens {
     ResetPasswordScreen,
     HomeScreen,
     ProfileScreen,
-    WorkoutScreen,
     FullExerciceScreen,
     WorkoutABCScreen;
 
@@ -19,7 +18,6 @@ enum class NagitaionScreens {
             ResetPasswordScreen.name -> ResetPasswordScreen
             HomeScreen.name -> HomeScreen
             ProfileScreen.name -> ProfileScreen
-            WorkoutScreen.name -> WorkoutScreen
             FullExerciceScreen.name -> FullExerciceScreen
             WorkoutABCScreen.name -> WorkoutABCScreen
             null -> readerSplashScreen

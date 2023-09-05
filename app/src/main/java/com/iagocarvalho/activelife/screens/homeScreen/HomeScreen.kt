@@ -19,7 +19,9 @@ import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -193,7 +195,7 @@ fun BottomNavigationScreen(navController: NavController) {
         BottomNavigationItem(label = { Text(text = "Home") },
             icon = {
                 Icon(
-                    imageVector = Icons.Default.Person,
+                    imageVector = Icons.Default.Home,
                     contentDescription = ""
                 )
             },
@@ -202,12 +204,12 @@ fun BottomNavigationScreen(navController: NavController) {
         BottomNavigationItem(label = { Text(text = "Treino") },
             icon = {
                 Icon(
-                    imageVector = Icons.Default.Person,
+                    imageVector = Icons.Default.Create,
                     contentDescription = ""
                 )
             },
             selected = true,
-            onClick = { navController.navigate(NagitaionScreens.WorkoutScreen.name) })
+            onClick = { navController.navigate(NagitaionScreens.FullExerciceScreen.name) })
         BottomNavigationItem(label = { Text(text = "Perfil") },
             icon = {
                 Icon(
