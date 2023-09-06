@@ -296,17 +296,17 @@ fun ExerciseFromFBWorkOut(
 
                         )
                         GenericTextFild(
-                            TextFild = repeticoes,
+                            textFild = repeticoes,
                             keyboardType = KeyboardType.Number,
                             labelId = "Repetiçoes"
                         )
                         GenericTextFild(
-                            TextFild = series,
+                            textFild = series,
                             keyboardType = KeyboardType.Number,
                             labelId = "Series"
                         )
                         GenericTextFild(
-                            TextFild = carga,
+                            textFild = carga,
                             keyboardType = KeyboardType.Number,
                             labelId = "Cargar: Kg"
                         )

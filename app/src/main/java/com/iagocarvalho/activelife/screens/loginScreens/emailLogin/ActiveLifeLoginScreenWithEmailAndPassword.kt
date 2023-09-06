@@ -26,7 +26,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.google.firebase.FirebaseException
 import com.iagocarvalho.activelife.R
 import com.iagocarvalho.activelife.constants.UseFormeCreateUser
 import com.iagocarvalho.activelife.constants.UserForm
@@ -40,8 +39,6 @@ fun ActiveLifeLoginAndCreateAccScreen(
 
     val showLoginForm = remember { mutableStateOf(true) }
     val context = LocalContext.current
-
-    val FirebaseException: FirebaseException
 
     Column(
         modifier = Modifier

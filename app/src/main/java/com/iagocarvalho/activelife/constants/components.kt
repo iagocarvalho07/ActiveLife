@@ -1,8 +1,5 @@
 package com.iagocarvalho.activelife.constants
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,9 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -27,11 +22,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -48,7 +41,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import coil.compose.rememberAsyncImagePainter
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
@@ -56,7 +48,6 @@ import com.iagocarvalho.activelife.R
 
 @Composable
 fun EmailImput(
-    modifier: Modifier = Modifier,
     emailState: MutableState<String>,
     labelId: String = "Email",
     enableb: Boolean = true,
@@ -244,15 +235,15 @@ fun UseFormeCreateUser(
                 .isNotEmpty() && altura.value.trim().isNotEmpty() && idade.value.trim().isNotEmpty()
         }
 
-    Column() {
-        GenericTextFild(TextFild = name, keyboardType = KeyboardType.Text)
-        GenericTextFild(TextFild = peso, labelId = "Peso em KG", keyboardType = KeyboardType.Number)
+    Column {
+        GenericTextFild(textFild = name, keyboardType = KeyboardType.Text)
+        GenericTextFild(textFild = peso, labelId = "Peso em KG", keyboardType = KeyboardType.Number)
         GenericTextFild(
-            TextFild = altura,
+            textFild = altura,
             labelId = "Altura em Cm",
             keyboardType = KeyboardType.Number
         )
-        GenericTextFild(TextFild = idade, labelId = "Idade", keyboardType = KeyboardType.Number)
+        GenericTextFild(textFild = idade, labelId = "Idade", keyboardType = KeyboardType.Number)
         EmailImput(emailState = email)
         PasswordInput(
             modifier = Modifier,
@@ -280,8 +271,7 @@ fun UseFormeCreateUser(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GenericTextFild(
-    modifier: Modifier = Modifier,
-    TextFild: MutableState<String>,
+    modifier: Modifier = Modifier, textFild: MutableState<String>,
     labelId: String = "Name",
     enableb: Boolean = true,
     imeAction: ImeAction = ImeAction.Next,
@@ -289,8 +279,8 @@ fun GenericTextFild(
     keyboardType: KeyboardType
 ) {
     OutlinedTextField(
-        value = TextFild.value,
-        onValueChange = { TextFild.value = it },
+        value = textFild.value,
+        onValueChange = { textFild.value = it },
         label = { Text(text = labelId) },
         singleLine = true,
         textStyle = TextStyle(
