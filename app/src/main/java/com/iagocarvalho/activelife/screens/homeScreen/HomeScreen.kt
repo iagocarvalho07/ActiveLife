@@ -136,7 +136,7 @@ fun ScaffoldScreen(
                             )
                         }
                         Text(
-                            text = "Categoria: Iniciante", style = TextStyle(
+                            text = "Categoria: Disciplina", style = TextStyle(
                                 fontSize = 15.sp,
                                 fontFamily = FontFamily.Serif,
                                 fontWeight = FontWeight(700),
@@ -255,16 +255,7 @@ fun CardTreiner(navController: NavController, isHomeScreen: Boolean = true) {
                         verticalArrangement = Arrangement.Top
                     ) {
                         Text(
-                            text = "Beginner Level",
-                            style = TextStyle(
-                                fontSize = 15.sp,
-                                fontFamily = FontFamily.Serif,
-                                fontWeight = FontWeight(700),
-                                color = Color.White,
-                            )
-                        )
-                        Text(
-                            text = "Strong and Big",
+                            text = "A persistência é o caminho do êxito",
                             style = TextStyle(
                                 fontSize = 15.sp,
                                 fontFamily = FontFamily.Serif,
@@ -283,7 +274,7 @@ fun CardTreiner(navController: NavController, isHomeScreen: Boolean = true) {
                             ) {
                                 Column {
                                     Text(
-                                        text = "Treino A",
+                                        text = "Treino A / B / C / D",
                                         style = TextStyle(
                                             fontSize = 10.sp,
                                             fontFamily = FontFamily.Serif,
@@ -292,7 +283,7 @@ fun CardTreiner(navController: NavController, isHomeScreen: Boolean = true) {
                                         )
                                     )
                                     Text(
-                                        text = "Total Workouts 6", style = TextStyle(
+                                        text = "Total Workouts", style = TextStyle(
                                             fontSize = 10.sp,
                                             fontFamily = FontFamily.Serif,
                                             fontWeight = FontWeight(700),
@@ -300,7 +291,7 @@ fun CardTreiner(navController: NavController, isHomeScreen: Boolean = true) {
                                         )
                                     )
                                     Text(
-                                        text = "Tempo Estimado: 45min", style = TextStyle(
+                                        text = "Tempo Recomendado: 45Min - 1H 20Min", style = TextStyle(
                                             fontSize = 10.sp,
                                             fontFamily = FontFamily.Serif,
                                             fontWeight = FontWeight(700),

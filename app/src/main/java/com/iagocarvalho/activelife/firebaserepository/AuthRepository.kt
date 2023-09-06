@@ -146,11 +146,32 @@ class AuthRepository {
                 Log.d("updateUser", "CreatUser: Document ${docId}")
                 FirebaseFirestore.getInstance().collection("users").document(docId)
                     .update("documenteId", docId)
-                    .addOnCompleteListener { tasks -> Log.d("updateUser", "CreatUser: ${tasks.result}") }
-                    .addOnFailureListener { tasks -> Log.d("updateUser", "CreatUser: ${tasks.message}") }
+                    .addOnCompleteListener { tasks ->
+                        Log.d(
+                            "updateUser",
+                            "CreatUser: ${tasks.result}"
+                        )
+                    }
+                    .addOnFailureListener { tasks ->
+                        Log.d(
+                            "updateUser",
+                            "CreatUser: ${tasks.message}"
+                        )
+                    }
 
             }
-            .addOnFailureListener { e -> Log.d("updateUser", "CreatUser: documento n foi criado $e") }
+            .addOnFailureListener { e ->
+                Log.d(
+                    "updateUser",
+                    "CreatUser: documento n foi criado $e"
+                )
+            }
+    }
+
+    fun DeleteUser() {
+        currentUser!!.delete()
+            .addOnCompleteListener { task ->
+            }
     }
 }
 

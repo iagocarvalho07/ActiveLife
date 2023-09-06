@@ -3,6 +3,7 @@ package com.iagocarvalho.activelife.screens.profileScreen
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.iagocarvalho.activelife.firebaserepository.AuthRepository
 import com.iagocarvalho.activelife.firebaserepository.DataSorce
 import com.iagocarvalho.activelife.model.modelUsers.ModelUser
 import kotlinx.coroutines.launch
@@ -11,6 +12,7 @@ class ProfileScreenViewModel: ViewModel() {
 
     val state = mutableStateOf(ModelUser())
     private val dataStore =  DataSorce()
+    private val authRepo = AuthRepository()
 
     init {
         getData()
@@ -26,5 +28,13 @@ class ProfileScreenViewModel: ViewModel() {
         valor: String,
     ){
         viewModelScope.launch { dataStore.updateUserFromFb(documenteId, campo, valor) }
+    }
+
+    fun DeleteUserFB(){
+        authRepo.DeleteUser()
+    }
+
+    fun SingOut(){
+        authRepo.SingOut()
     }
 }

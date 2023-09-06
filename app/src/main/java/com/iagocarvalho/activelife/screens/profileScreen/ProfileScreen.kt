@@ -6,21 +6,19 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.ScrollableState
-import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -30,7 +28,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -44,7 +41,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -55,17 +51,20 @@ import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.iagocarvalho.activelife.constants.BannerAdView
+import com.iagocarvalho.activelife.navigation.NagitaionScreens
 import com.iagocarvalho.activelife.screens.homeScreen.BottomNavigationScreen
 import com.iagocarvalho.activelife.screens.homeScreen.TopAppBarScren
 
 private var mInterstitialAd: InterstitialAd? = null
+
 // ca-app-pub-1389782159432301/8756354855  <- real
 // ca-app-pub-3940256099942544/1033173712 <- test
-private val adId  = "ca-app-pub-1389782159432301/8756354855"
-@Preview(showBackground = true)
+private const val adId = "ca-app-pub-1389782159432301/8756354855"
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(navController: NavController = NavController(LocalContext.current)) {
+fun ProfileScreen(navController: NavController) {
     Scaffold(topBar = {
         TopAppBarScren(
             navController = navController,
@@ -87,22 +86,22 @@ fun ProfileScreen(navController: NavController = NavController(LocalContext.curr
 
                 ) {
                 BannerAdView()
-                ShowProfile()
+                ShowProfile(navController)
             }
         }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
 fun ShowProfile(
-    navController: NavController = NavController(LocalContext.current),
+    navController: NavController,
     viewModel: ProfileScreenViewModel = viewModel()
 ) {
     val contex = LocalContext.current
     val expande = remember { mutableStateOf(false) }
     val adStatus = remember { mutableStateOf(false) }
     val getDataUserInfo = viewModel.state.value
+    val context = LocalContext.current
     val styleNumbers = TextStyle(
         fontSize = 20.sp,
         fontFamily = FontFamily.Serif,
@@ -115,9 +114,9 @@ fun ShowProfile(
         fontWeight = FontWeight(700),
     )
 
-    fun loadinInterestitailAd(adStatus: (Boolean) -> Unit){
+    fun loadinInterestitailAd(adStatus: (Boolean) -> Unit) {
         val adRequest = AdRequest.Builder().build()
-        InterstitialAd.load(contex, adId, adRequest, object : InterstitialAdLoadCallback(){
+        InterstitialAd.load(contex, adId, adRequest, object : InterstitialAdLoadCallback() {
             override fun onAdFailedToLoad(error: LoadAdError) {
                 super.onAdFailedToLoad(error)
                 mInterstitialAd = null
@@ -135,9 +134,9 @@ fun ShowProfile(
 
     }
 
-    fun showInterticialAd(){
-        mInterstitialAd?.let {ad ->
-            ad.fullScreenContentCallback = object : FullScreenContentCallback(){
+    fun showInterticialAd() {
+        mInterstitialAd?.let { ad ->
+            ad.fullScreenContentCallback = object : FullScreenContentCallback() {
                 override fun onAdDismissedFullScreenContent() {
                     super.onAdDismissedFullScreenContent()
                     Log.i("Ad_Stut", "onAdDismissedFullScreenContent: ")
@@ -155,7 +154,7 @@ fun ShowProfile(
                 }
             }
             ad.show(contex as Activity)
-        }?: kotlin.run {
+        } ?: kotlin.run {
             Toast.makeText(contex, "ad is null", Toast.LENGTH_SHORT).show()
         }
     }
@@ -175,7 +174,7 @@ fun ShowProfile(
             Image(
                 imageVector = Icons.Default.Person,
                 contentDescription = "",
-                modifier = Modifier.size(200.dp)
+                modifier = Modifier.size(20.dp)
             )
         }
         Text(
@@ -188,12 +187,11 @@ fun ShowProfile(
         Column {
             Card(
                 modifier = Modifier
-                    .padding(16.dp)
+                    .padding(4.dp)
             ) {
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
+                        .fillMaxWidth(),
                     Arrangement.SpaceAround,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -214,19 +212,91 @@ fun ShowProfile(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(4.dp)
+            ) {
+                val expandeDeletCont = remember { mutableStateOf(false) }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "solicitar Exclusão conta: ",
+                        style = styleString,
+                        modifier = Modifier.clickable { expandeDeletCont.value = true })
+                    if (expandeDeletCont.value) {
+                        AlertDialog(
+                            onDismissRequest = {
+                                expandeDeletCont.value = false
+                            },
+                            title = {
+                                Text(text = "Delete Account")
+                            },
+                            text = {
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(180.dp),
+                                    verticalArrangement = Arrangement.Center,
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    Text(
+                                        text = "Ao prosseguir com esta ação,\n" +
+                                                " os dados selecionados serão excluídos permanentemente.\n"
+                                    )
+                                }
+                            },
+                            dismissButton = {
+                                TextButton(
+                                    onClick = {
+                                        expandeDeletCont.value = false
+
+                                    }
+                                ) {
+                                    Text("Retornar ")
+                                }
+                            },
+                            confirmButton = {
+                                TextButton(
+                                    onClick = {
+                                        expandeDeletCont.value = false
+                                        viewModel.DeleteUserFB()
+                                        viewModel.SingOut()
+                                        navController.navigate(NagitaionScreens.readerSplashScreen.name)
+                                            .run {
+                                                Toast.makeText(
+                                                    context,
+                                                    "Dados Exluidos Com Sucesso",
+                                                    Toast.LENGTH_LONG
+                                                ).show()
+                                            }
+                                    }
+                                ) {
+                                    Text("Excluir acc ")
+                                }
+                            }
+                        )
+                    }
+                }
+            }
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(
                         modifier = Modifier
-                            .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween,
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         ElevatedButton(onClick = {
-                            if (adStatus.value){
+                            if (adStatus.value) {
                                 showInterticialAd()
                                 adStatus.value = false
-                            }else{
+                            } else {
                                 loadinInterestitailAd {
                                     adStatus.value = it
                                 }
@@ -259,7 +329,5 @@ fun ShowProfile(
             }
         }
     }
-
-
-
 }
+

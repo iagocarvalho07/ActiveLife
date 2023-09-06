@@ -292,7 +292,7 @@ fun ExerciseFromFBWorkOut(
                     Column {
                         Text(
                             modifier = Modifier.padding(8.dp),
-                            text = "Diga: Atualize sua carga, repetiçoes e series, acompanhe seu progreço constantemente "
+                            text = "Dica: Atualize sua carga, repetiçoes e series, acompanhe seu progreço constantemente "
 
                         )
                         GenericTextFild(
