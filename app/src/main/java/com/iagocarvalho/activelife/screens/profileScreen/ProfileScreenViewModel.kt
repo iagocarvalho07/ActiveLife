@@ -31,10 +31,10 @@ class ProfileScreenViewModel: ViewModel() {
     }
 
     fun DeleteUserFB(){
-        authRepo.DeleteUser()
+        authRepo.deleteUser()
     }
 
     fun SingOut(){
-        authRepo.SingOut()
+        authRepo.singOut()
     }
 }

@@ -22,7 +22,7 @@ class HomeScreenViewModel : ViewModel() {
     }
 
     fun sigOut() {
-        viewModelScope.launch { AuthRepository().SingOut() }
+        viewModelScope.launch { AuthRepository().singOut() }
     }
 
 }

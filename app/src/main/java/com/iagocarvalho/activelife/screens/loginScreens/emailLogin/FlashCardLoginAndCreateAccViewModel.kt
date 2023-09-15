@@ -15,7 +15,7 @@ class FlashCardLoginAndCreateAccViewModel() : ViewModel() {
         errors: (Exception?) -> Unit
     ) {
         viewModelScope.launch {
-            AuthRepository().FirebaseSignInWithEmailAndPassword(
+            AuthRepository().firebaseSignInWithEmailAndPassword(
                 email,
                 senha,
                 home,

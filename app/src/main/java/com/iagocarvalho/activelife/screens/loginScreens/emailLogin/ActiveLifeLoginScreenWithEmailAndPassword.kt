@@ -92,23 +92,31 @@ fun ActiveLifeLoginAndCreateAccScreen(
                                             }
                                     },
                                     errors = { task ->
-                                        Log.d(
-                                            "FireBaseError",
-                                            "ActiveLifeLoginAndCreateAccScreen: ${task!!.message} "
-                                        )
-                                        if (task.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred.") {
+                                        if (task != null) {
                                             Toast.makeText(
                                                 context,
-                                                "Verifique sua Conexãol",
-                                                Toast.LENGTH_LONG
-                                            ).show()
-                                        } else {
-                                            Toast.makeText(
-                                                context,
-                                                "Erro na senha ou email",
+                                                task.message.toString(),
                                                 Toast.LENGTH_LONG
                                             ).show()
                                         }
+
+//                                        Log.d(
+//                                            "FireBaseError",
+//                                            "ActiveLifeLoginAndCreateAccScreen: ${task!!.message} "
+//                                        )
+//                                        if (task.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred.") {
+//                                            Toast.makeText(
+//                                                context,
+//                                                "Verifique sua Conexãol",
+//                                                Toast.LENGTH_LONG
+//                                            ).show()
+//                                        } else {
+//                                            Toast.makeText(
+//                                                context,
+//                                                "Erro na senha ou email",
+//                                                Toast.LENGTH_LONG
+//                                            ).show()
+//                                        }
                                     })
                             }
                         } else {
@@ -131,24 +139,30 @@ fun ActiveLifeLoginAndCreateAccScreen(
                                             }
                                     }, errors = { task ->
                                         val exception = task!!.message.toString()
+                                        Toast.makeText(
+                                            context,
+                                            exception,
+                                            Toast.LENGTH_LONG
+                                        ).show()
 
-                                        if (exception == "The email address is already in use by another account.") {
-                                            Log.d(
-                                                "FBTask",
-                                                "oque aconteceu: ${task.localizedMessage}"
-                                            )
-                                            Toast.makeText(
-                                                context,
-                                                "Usuario Já cadastrado",
-                                                Toast.LENGTH_LONG
-                                            ).show()
-                                        } else {
-                                            Toast.makeText(
-                                                context,
-                                                "A senha deve Conter 6 ou + Caracteres",
-                                                Toast.LENGTH_LONG
-                                            ).show()
-                                        }
+
+//                                        if (exception == "The email address is already in use by another account.") {
+//                                            Log.d(
+//                                                "FBTask",
+//                                                "oque aconteceu: ${task.localizedMessage}"
+//                                            )
+//                                            Toast.makeText(
+//                                                context,
+//                                                "Usuario Já cadastrado",
+//                                                Toast.LENGTH_LONG
+//                                            ).show()
+//                                        } else {
+//                                            Toast.makeText(
+//                                                context,
+//                                                "A senha deve Conter 6 ou + Caracteres",
+//                                                Toast.LENGTH_LONG
+//                                            ).show()
+//                                        }
                                     })
                             }
                         }

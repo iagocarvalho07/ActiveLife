@@ -1,10 +1,8 @@
 package com.iagocarvalho.activelife.firebaserepository
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
@@ -17,9 +15,8 @@ class AuthRepository {
 
 
     private val _loading = MutableLiveData(false)
-    val loading: LiveData<Boolean> = _loading
 
-    fun FirebaseSignInWithEmailAndPassword(
+    fun firebaseSignInWithEmailAndPassword(
         email: String,
         password: String,
         home: () -> Unit,
@@ -32,9 +29,7 @@ class AuthRepository {
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d("Login", "firebaseSignInWithEmailAndPassword: ${task.result}")
-                        val user = authRepository.currentUser
                         home()
-                        updateUi(user)
                     } else {
                         Log.w("EXC", "firebaseSignInWithEmailAndPassword: ${task.exception}")
                         errors(task.exception)
@@ -63,7 +58,7 @@ class AuthRepository {
                             "createUser",
                             "createUserWithEmailAndPassword Deu certo: ${task.isSuccessful} "
                         )
-                        CreatUser(
+                        creatUser(
                             name = name,
                             peso = peso,
                             altura = altura,
@@ -72,8 +67,8 @@ class AuthRepository {
                             avatarURL = ""
                         )
                         home()
-                        val user = authRepository.currentUser
-                        updateUi(user)
+
+
                     } else {
                         Log.w("EXC", "createUserWithEmailAndPassword: Deu Merda${task.exception}")
                         errors(task.exception)
@@ -83,7 +78,7 @@ class AuthRepository {
         }
     }
 
-    fun SendEmailVerification() {
+    fun sendEmailVerification() {
         currentUser!!.sendEmailVerification()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -114,14 +109,11 @@ class AuthRepository {
             }
     }
 
-    fun SingOut() {
+    fun singOut() {
         authRepository.signOut()
     }
 
-    private fun updateUi(user: FirebaseUser?) {
-    }
-
-    fun CreatUser(
+    private fun creatUser(
         name: String,
         peso: String,
         altura: String,
@@ -143,7 +135,7 @@ class AuthRepository {
             .add(user)
             .addOnCompleteListener { task ->
                 val docId = task.result.id
-                Log.d("updateUser", "CreatUser: Document ${docId}")
+                Log.d("updateUser", "CreatUser: Document $docId")
                 FirebaseFirestore.getInstance().collection("users").document(docId)
                     .update("documenteId", docId)
                     .addOnCompleteListener { tasks ->
@@ -168,7 +160,7 @@ class AuthRepository {
             }
     }
 
-    fun DeleteUser() {
+    fun deleteUser() {
         currentUser!!.delete()
             .addOnCompleteListener { task ->
             }

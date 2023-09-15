@@ -7,6 +7,6 @@ import kotlinx.coroutines.launch
 
 class EmailVerificationScreenViewModel: ViewModel() {
     fun SendEmailVerification(){
-        viewModelScope.launch { AuthRepository().SendEmailVerification() }
+        viewModelScope.launch { AuthRepository().sendEmailVerification() }
     }
 }
