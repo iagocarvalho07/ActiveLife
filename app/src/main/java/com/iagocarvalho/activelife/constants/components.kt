@@ -13,7 +13,6 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -64,7 +63,6 @@ fun EmailImput(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InputField(
     modifier: Modifier = Modifier,
@@ -95,7 +93,6 @@ fun InputField(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PasswordInput(
     modifier: Modifier,
@@ -268,7 +265,6 @@ fun UseFormeCreateUser(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GenericTextFild(
     modifier: Modifier = Modifier, textFild: MutableState<String>,
@@ -296,7 +292,7 @@ fun GenericTextFild(
     )
 }
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchBar(text: MutableState<String>) {
 

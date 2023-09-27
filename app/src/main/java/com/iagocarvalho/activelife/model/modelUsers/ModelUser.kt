@@ -9,19 +9,4 @@ data class ModelUser(
     val email: String= "",
     val avatarURL: String= "",
     val documenteId: String = ""
-
-
-){
-    fun toMap(): MutableMap<String, Any>{
-        return mutableMapOf(
-            "user_id" to this.user_id,
-            "display_name" to this.display_name,
-            "peso" to this.peso,
-            "altura" to this.altura,
-            "idade" to this.idade,
-            "email" to this.email,
-            "avatar_Url" to this.avatarURL,
-            "documenteId" to this.documenteId,
-        )
-    }
-}
+)
