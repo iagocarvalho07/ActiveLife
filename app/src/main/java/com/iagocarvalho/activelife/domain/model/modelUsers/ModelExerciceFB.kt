@@ -1,4 +1,4 @@
-package com.iagocarvalho.activelife.model.modelUsers
+package com.iagocarvalho.activelife.domain.model.modelUsers
 
 data class ModelExerciceFB(
     val body_Part: String = "",

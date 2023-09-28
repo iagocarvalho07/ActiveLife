@@ -1,4 +1,4 @@
-package com.iagocarvalho.activelife.model.modelUsers
+package com.iagocarvalho.activelife.domain.model.modelUsers
 
 data class ModelUser(
     val user_id: String = "",
