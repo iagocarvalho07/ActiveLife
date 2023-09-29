@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.iagocarvalho.activelife.navigation.navigationViewContentScreen.NavigationViewContent
 import com.iagocarvalho.activelife.presentetion.screens.autenticationScreens.createAccScreen.CreateAccScreen
 import com.iagocarvalho.activelife.presentetion.screens.autenticationScreens.emailVerificationScreen.EmailVerificationScreen
@@ -20,8 +21,9 @@ import com.iagocarvalho.activelife.presentetion.screens.drawerScreens.details.De
 import com.iagocarvalho.activelife.presentetion.screens.drawerScreens.disclamer.DisclamerScreen
 import com.iagocarvalho.activelife.presentetion.screens.drawerScreens.faq.FaqScreen
 import com.iagocarvalho.activelife.presentetion.screens.drawerScreens.help.HelpScreen
+import com.iagocarvalho.activelife.presentetion.screens.splashScreen.WelcomeScree
 
-
+@ExperimentalPagerApi
 @Composable
 fun RootNagivationGraph(navController: NavHostController) {
     NavHost(
@@ -37,13 +39,20 @@ fun RootNagivationGraph(navController: NavHostController) {
     }
 }
 
+@ExperimentalPagerApi
 fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
-    navigation(route = AppGraph.auth.ROOT, startDestination = AppGraph.auth.SPLASHSCREE) {
+    navigation(
+        route = AppGraph.auth.ROOT,
+        startDestination = AppGraph.auth.SPLASHSCREE
+    ) {
         composable(route = AppGraph.auth.SPLASHSCREE) {
             SplashScreen(
-                onLoginScreen = { navController.navigate(AppGraph.auth.LOGIN) },
-                onHomeScreen = { navController.navigate(AppGraph.home.ROOT) }
+                onLoginScreen = { navController.navigate(AppGraph.home.ROOT) },
+                onWelcomeScreen = { navController.navigate(AppGraph.auth.WELCOME) }
             )
+        }
+        composable(route = AppGraph.auth.WELCOME) {
+            WelcomeScree(navController = navController, goHomeScreen = { navController.navigate(AppGraph.auth.LOGIN) })
         }
         composable(route = AppGraph.auth.LOGIN) {
             LoginScreen(navController = navController)

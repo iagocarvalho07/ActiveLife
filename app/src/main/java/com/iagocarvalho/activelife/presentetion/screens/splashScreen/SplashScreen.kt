@@ -13,9 +13,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.BlendMode.Companion.Screen
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -23,13 +26,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 import com.iagocarvalho.activelife.R
+import com.iagocarvalho.activelife.navigation.AppGraph
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen(onLoginScreen: () -> Unit = {}, onHomeScreen: () -> Unit = {}) {
+fun SplashScreen(
+    onLoginScreen: () -> Unit = {},
+    onWelcomeScreen: () -> Unit = {},
+    splashScreenViewModel: SplashScreenViewModel = hiltViewModel()
+) {
     Text(text = "splashScreen")
+
+    val onBoardingCompleted by splashScreenViewModel.onboardingCompleted.collectAsState()
 
     val scale = remember {
         Animatable(0f)
@@ -47,8 +60,11 @@ fun SplashScreen(onLoginScreen: () -> Unit = {}, onHomeScreen: () -> Unit = {}) 
 //        } else if (FirebaseAuth.getInstance().currentUser?.isEmailVerified == false) {
 //            onLoginScreen()
 //        } else {
-            onHomeScreen()
-      //  }
+        if (onBoardingCompleted) {
+            onLoginScreen()
+        } else {
+            onWelcomeScreen()
+        }
     }
 
     Column(

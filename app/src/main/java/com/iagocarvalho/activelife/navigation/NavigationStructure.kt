@@ -2,6 +2,7 @@ package com.iagocarvalho.activelife.navigation
 
 object AuthGraph {
     const val ROOT = "auth_graph"
+    const val WELCOME = "welcome"
     const val LOGIN = "login"
     const val SIGN_UP = "sign_up"
     const val FORGOT_PASSWORD = "forgot_password"

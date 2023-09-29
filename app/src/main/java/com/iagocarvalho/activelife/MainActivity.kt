@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
 import com.iagocarvalho.activelife.navigation.RootNagivationGraph
@@ -11,6 +12,7 @@ import com.iagocarvalho.activelife.ui.theme.ActiveLifeTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Collections
 
+@ExperimentalPagerApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
